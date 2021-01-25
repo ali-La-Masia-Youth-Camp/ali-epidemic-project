@@ -28,10 +28,14 @@
 3. 提交规范
     1. commit格式为：git commit -m "[type]: [info]"，type可以分为下面几类
 <<<<<<< HEAD
+<<<<<<< HEAD
         - add：提交新功能
 =======
         - feat：提交新功能
 >>>>>>> 41355a7... docs: 添加README.md
+=======
+        - feat：提交新功能
+>>>>>>> 41355a72b45375a7c24b9170917177030577a4ae
         - fix：修改bug
         - docs：只修改了文档
         - style：调整代码格式，没有修改代码逻辑（例如修改 tslint 提出的代码样式的问题）
