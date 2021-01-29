@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@antv/data-set": "^0.11.7",
     "@antv/f2": "^3.8.1",
     "@antv/g2": "^4.1.7",
     "axios": "^0.21.1",
