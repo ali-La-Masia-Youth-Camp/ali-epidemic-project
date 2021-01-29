@@ -3,7 +3,5 @@ import { ActionTree } from 'vuex';
 import * as types from './mutationTypes';
 import AJAX from '@/common/ajax';
 
-const $http = new AJAX();
-
 export const actions: ActionTree<IStateInterface, IStateInterface> = {
 };
