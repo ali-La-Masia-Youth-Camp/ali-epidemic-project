@@ -29,7 +29,8 @@
 </template>
 
 <script>
-import {AJAX} from '@/common/ajax';
+import AJAX from '@/common/ajax';
+import {Message} from 'element-ui';
 
 
 export default {
@@ -73,10 +74,15 @@ export default {
     },
     beforeMount(){
          const ajax = new AJAX();
-          const listURL = 'http://localhost:7001/china/city';
+          const listURL = 'http://localhost:7001/china/day';
           ajax.get(listURL)
-              .then((lData) => {
-                  this.tableData = lData.data;
+              .then((req) => {
+                  const tData= req.data;
+                    if(tData.isOk){
+                        this.table = tData.data;
+                    }else{
+                        Message.error(cityData.error);
+                    }
               })
               .catch(e=>console.log(e));
     }

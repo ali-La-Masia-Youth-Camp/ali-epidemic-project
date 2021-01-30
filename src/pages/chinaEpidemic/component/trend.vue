@@ -4,7 +4,9 @@
 
 <script>
 import {Chart} from '@antv/g2';
-import {AJAX} from '@/common/ajax';
+import AJAX from '@/common/ajax';
+import {Message} from 'element-ui';
+
 
 export default {
     name:'trend',
@@ -24,26 +26,36 @@ export default {
             ]
         };
     },
-    beforeMount(){
+    mounted(){
         const ajax = new AJAX();
-        const trendURL = 'http://localhost:7001/china/city';
+        const trendURL = 'http://localhost:7001/china/daycount';
         ajax.get(trendURL)
-            .then((tData) => {
-                this.data = tData.data;
+            .then((req) => {
+                 const tData= req.data;
+                        console.log(tData);
+                    //后端bug
+                    if(!tData.isOk){
+                        console.log(tData);
+                        this.data = tData.data.sort((a,b)=>a>=b);
+                        this.render();
+                    }else{
+                        Message.error(tData.error);
+                    }
             })
             .catch(e=>console.log(e));
     },
-    mounted(){
+    methods:{
+            render(){
         setTimeout(()=>{
             const chart = new Chart({
                 container:'trend-container',
                 autoFit:true,
-                padding:[30,30]
+                padding:[0,0,25,35]
             });
             chart.line()
                 .position('date*value')
                 .color('value',['yellow','green']);
-            chart.point().position('date*value');
+            // chart.point().position('date*value');
             chart.legend(false);    
             chart.tooltip({
                 showCrosshairs: true, // 展示 Tooltip 辅助线
@@ -60,6 +72,8 @@ export default {
             chart.render();
             });  
     }
+    }
+
 }
 </script>
 

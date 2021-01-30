@@ -7,6 +7,7 @@ import {Chart} from '@antv/g2';
 import DataSet from '@antv/data-set';
 import AJAX from '@/common/ajax';
 import ChinaMap from '@/mock/china-province.json';
+import {Message} from 'element-ui';
 
 export default {
     name:'china-map',
@@ -45,14 +46,20 @@ export default {
         const ajax = new AJAX();
         const provinceURL = 'http://localhost:7001/china/province';
         ajax.get(provinceURL)
-            .then((pData) => {
-                this.data = pData.data;
+            .then((rep) => {
+                const pData = rep.data;
+                if (pData.isOk) {
+                    this.data = pData.data.filter(item=>item.value!==0);
+                    this.render();
+                } else {
+                    Message.error(pData.error);
+                }
             })
-            .catch(e=>console.log(e));
+            .catch((e) =>  Message.error(pData.error));
     },
-
-    mounted() {
-        setTimeout(()=>{
+    methods:{
+        render() {
+        setTimeout(() => {
             const chart = new Chart({
                 container: 'china-map-container',
                 autoFit: true,
@@ -90,7 +97,7 @@ export default {
                         .style({
                             fill: '#fff',
                             stroke: '#ccc',
-                            lineWidth: 1
+                            lineWidth: 1,
                         });
             // 可视化用户数据
             const userDv = ds.createView()
@@ -103,9 +110,9 @@ export default {
                             })
                             .transform({
                                 type: 'map',
-                                callback: obj => {
+                                callback: (obj) => {
                                     return obj;
-                                }
+                                },
                             });
             const userView = chart.createView();
             userView.data(userDv.rows);
@@ -133,6 +140,8 @@ export default {
             chart.render();
         });
     }
+    }
+  
 }
 </script>
 
