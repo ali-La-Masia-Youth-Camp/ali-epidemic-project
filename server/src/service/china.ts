@@ -23,6 +23,7 @@ export class ChinaService {
     '宁夏','海南']
 
 
+  //查询每个省近一个月的新增病例
   async getProvince() {
        const staticUrl='https://api.inews.qq.com/newsqa/v1/query/pubished/daily/list?province=';
       let data=[];
@@ -49,7 +50,16 @@ export class ChinaService {
           }
         })
       )
-    this.ctx.logger.info(data.length)
-    return data;
+    const result={
+        isOk:true,
+        data
+    }
+
+    return result;
+  }
+
+  //查询最近n天的确诊数据
+  async getNDayData(){
+
   }
 }
