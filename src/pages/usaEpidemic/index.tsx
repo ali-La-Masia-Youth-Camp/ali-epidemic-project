@@ -11,7 +11,6 @@ import { InteractionConstructor } from '@antv/g2/lib/interaction/interaction';
 
 @Component({})
 export default class UsaEpidemic extends Vue {
-
     public mapData!: any; //原始地图数据
 
     public mapDataView!: any;
@@ -23,7 +22,6 @@ export default class UsaEpidemic extends Vue {
     public view!: View;
 
     public backgroundView!: View;
-
     public dataset!: any;
 
     public $refs!: {
@@ -236,7 +234,6 @@ export default class UsaEpidemic extends Vue {
             .style({
                 fillOpacity: 0.85,
             })
-
         view.interaction('element-active');
         view.interaction('state-click');
     }
@@ -248,7 +245,6 @@ export default class UsaEpidemic extends Vue {
     public mounted() {
         this.mapData = USAJson;
         this.epidemicData = USAStateJson.data.children;
-
         this.chart = new Chart({
             container: 'usa-map__container',
             autoFit: true,
