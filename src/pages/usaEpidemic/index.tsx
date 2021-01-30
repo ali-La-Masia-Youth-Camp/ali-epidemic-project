@@ -12,11 +12,17 @@ import { InteractionConstructor } from '@antv/g2/lib/interaction/interaction';
 @Component({})
 export default class UsaEpidemic extends Vue {
 
-    public mapData!: any;
+    public mapData!: any; //原始地图数据
+
+    public mapDataView!: any;
 
     public epidemicData!: IUSAStateEpidemic[];
 
     public chart!: View;
+
+    public view!: View;
+
+    public backgroundView!: View;
 
     public dataset!: any;
 
@@ -66,6 +72,19 @@ export default class UsaEpidemic extends Vue {
         }
     }
 
+    public initOptions() {
+        this.setTooltip();
+        this.setScale();
+        this.setLegend(false);
+        this.setAxis(false);
+    }
+
+    public handleChartActions() {
+        this.registerStateClick();
+
+        this.listenChartClick();
+    }
+
     public setLegend(legend: boolean | string, config?: any) {
         if (this.chart) {
             if (typeof legend === 'boolean') {
@@ -84,47 +103,90 @@ export default class UsaEpidemic extends Vue {
                 { trigger: 'plot:mouseleave', action: 'cursor:default' },
                 { trigger: 'mask:mouseleave', action: 'cursor:pointer' },
             ],
-            start: [
-                { trigger: 'plot:click', isEnable(context) {
-                    console.log(context);
-                    return false;
-                }, action: ['scale-zoom:zoomOut'] }
-            ],
-            processing: [],
-            end: [],
         });
+    }
+
+    getClickStateData(cb: any) {
+        this.chart.on('element:click', (ev: any) => {
+            const stateData = ev.data.data;
+            if(stateData) {
+                cb(stateData);
+            }
+        })
+    }
+
+    getStateCoordinates(name: string) {
+        return {
+            type: 'FeatureCollection',
+            features: [ this.mapData.features.find((state: any) => state.properties.name === name) ]
+        };
+    }
+
+    listenChartClick() {
+        this.getClickStateData((stateData: IUSAStateEpidemic) => {
+            this.backgroundView.clear();
+            this.view.clear();
+            const region = {
+                region: {
+                    start: { x: 0.2, y: 0.1 },
+                    end: { x: 0.6, y: 0.9 },
+                }
+            };
+            const stateCoords = this.getStateCoordinates(stateData.nameMap);
+            const stateMapView = this.dataset.createView(stateData.nameMap)
+                .source(stateCoords, {
+                    type: 'GeoJSON',
+                });
+            const stateBgView = this.chart.createView(region)
+            const stateUserView = this.chart.createView(region)
+            this.draw(stateMapView, [stateData], stateBgView, stateUserView);
+            this.renderChart();
+        })
+    }
+
+    public draw(
+        coordData: any, 
+        epidemicData: IUSAStateEpidemic[],
+        bgView = this.backgroundView,
+        userView = this.view
+    ) {
+        const maxConfirmState = findMaxComfirmFromGeoData(this.epidemicData);
+        const minConfirmState = findMinComfirmFromGeoData(this.epidemicData);
+
+        this.drawDataSetBackground(coordData, bgView);
+
+        this.drawDataSetUserView(epidemicData, {
+            maxConfirm: maxConfirmState.confirm,
+            minConfirm: minConfirmState.confirm,
+        }, userView);
     }
 
     /**
      * 美国地图背景
      */
-    public drawDataSetBackground(maxState: IUSAStateEpidemic, minState: IUSAStateEpidemic) {
-        this.dataset = new DataSet();
-        const usaMap = this.dataset.createView('back')
-            .source(this.mapData, {
-                type: 'GeoJSON',
-            });
-        this.scaleState(usaMap, 'Hawaii', 8, 51);
-        this.scaleState(usaMap, 'Puerto Rico', 10, -25);
-        const worldMapView = this.chart.createView();
-        worldMapView.data(usaMap.rows);
-        worldMapView.tooltip(false);
-        worldMapView.polygon().position('longitude*latitude').style({
+    public drawDataSetBackground(sourceData: any, bgView: View) {
+        console.log('sourceData: ', sourceData);
+        if(sourceData.rows.length > 1) {
+            this.scaleState(sourceData, 'Hawaii', 8, 51);
+            this.scaleState(sourceData, 'Puerto Rico', 10, -25);
+        }
+        bgView.data(sourceData.rows);
+        bgView.tooltip(false);
+        bgView.polygon().position('longitude*latitude').style({
             fill: '#fff',
             stroke: '#ccc',
             lineWidth: 1,
-        });
-
-        this.drawDataSetUserView(usaMap, {
-            maxConfirm: maxState.confirm,
-            minConfirm: minState.confirm,
-        });
+        })
     }
 
     /**
      * 用户可视化数据
      */
-    public drawDataSetUserView(usaMap: any, range: { maxConfirm: number, minConfirm: number }) {
+    public drawDataSetUserView(
+        sourceData: IUSAStateEpidemic[], 
+        range: { maxConfirm: number, minConfirm: number },
+        view: View
+    ) {
         const { maxConfirm, minConfirm } = range;
         const baseColor = {
             r: 255,
@@ -142,16 +204,15 @@ export default class UsaEpidemic extends Vue {
             b: Math.abs((baseColor.b - endColor.b)) / (maxConfirm - minConfirm),
         };
         const userDv = this.dataset.createView()
-            .source(this.epidemicData)
+            .source(sourceData)
             .transform({
-                geoDataView: usaMap,
+                geoDataView: this.mapDataView,
                 field: 'nameMap',
                 type: 'geo.region',
                 as: ['longitude', 'latitude'],
             });
-        const userView = this.chart.createView();
-        userView.data(userDv.rows);
-        userView.scale({
+        view.data(userDv.rows);
+        view.scale({
             name: {
                 alias: '州',
             },
@@ -162,7 +223,7 @@ export default class UsaEpidemic extends Vue {
                 alias: '确诊人数',
             },
         });
-        userView.polygon()
+        view.polygon()
             .position('longitude*latitude')
             .color('confirm', (confirm: number) => {
                 const steps = confirm - minConfirm;
@@ -175,14 +236,9 @@ export default class UsaEpidemic extends Vue {
             .style({
                 fillOpacity: 0.85,
             })
-            .animate({
-                leave: {
-                    animation: 'fade-out',
-                },
-            });
 
-        userView.interaction('element-active');
-        userView.interaction('state-click');
+        view.interaction('element-active');
+        view.interaction('state-click');
     }
 
     public renderChart() {
@@ -201,20 +257,20 @@ export default class UsaEpidemic extends Vue {
             padding: [20, 18],
         });
 
-        const maxConfirmState = findMaxComfirmFromGeoData(this.epidemicData);
-        const minConfirmState = findMinComfirmFromGeoData(this.epidemicData);
+        this.initOptions();
 
-        this.registerStateClick();
+        this.backgroundView = this.chart.createView();
+        this.view = this.chart.createView();
 
-        this.setTooltip();
+        this.dataset = new DataSet();
+        this.mapDataView = this.dataset.createView('back')
+            .source(this.mapData, {
+                type: 'GeoJSON',
+            });
 
-        this.setScale();
+        this.draw(this.mapDataView, this.epidemicData);
 
-        this.setLegend(false);
-
-        this.setAxis(false);
-
-        this.drawDataSetBackground(maxConfirmState, minConfirmState);
+        this.handleChartActions();
 
         this.renderChart();
     }
