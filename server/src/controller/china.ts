@@ -23,4 +23,16 @@ export class ChinaController {
     const data=await this.chinaService.getProvince();
     return data;
   }
+
+  @Get('/daycount')
+  async getDayCount() {
+    const data=await this.chinaService.getDayCount();
+    return data;
+  }
+
+  @Get('/city')
+  async getCityData(){
+    const data=await this.chinaService.getCityData();
+    return data;
+  }
 }
