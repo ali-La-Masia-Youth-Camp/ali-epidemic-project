@@ -1,0 +1,15 @@
+.usa-epidemic{
+    height: 100vh;
+    // background: url('../../assets/usa-background.jpeg');
+    // background-size: cover;
+    #usa-map__container{
+        max-width: 50%;
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+        max-height: 400px;
+    }
+}
