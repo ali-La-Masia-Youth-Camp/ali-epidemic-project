@@ -2,9 +2,14 @@ import {Component, Vue} from 'vue-property-decorator';
 import {Chart} from '@antv/g2';
 import DataSet from '@antv/data-set';
 import AJAX from '@/common/ajax';
+import Table from './component/table.vue'
 import './style.scss';
 
-@Component({})
+@Component({
+    components:{
+        Table
+    }
+})
 export default class ChinaEpidemic extends Vue {
     public render() {
         return (
@@ -18,12 +23,18 @@ export default class ChinaEpidemic extends Vue {
 				<div class="col col-l">
 					<div class="xpanel-wrapper xpanel-wrapper-40">
 						<div class="xpanel xpanel-l-t">
-							<div class="title"></div>
+							<div class="title">重点城市</div>
+                            <div class="display">
+                                <Table></Table>
+                            </div>
 						</div>
 					</div>
 					<div class="xpanel-wrapper xpanel-wrapper-60">
 						<div class="xpanel xpanel-l-b">
-							<div class="title"></div>
+							<div class="title">近一周新增</div>
+                            <div class="display">
+                                <Table></Table>
+                            </div>
 						</div>
 					</div>
 				</div>

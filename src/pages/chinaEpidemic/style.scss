@@ -108,10 +108,16 @@
 	background-repeat:no-repeat;
 	background-size:100% 100%;
 }
+.xpanel .display {
+	height: calc(100% - 44px);
+}
 .xpanel .title-long {background-image:url("img/title-bg-long.png");}
 /* PC */
 @media (max-width:1919px) {
 	.xpanel .title {padding-left:20px;height:36px;line-height:36px;font-size:20px;}
+	.xpanel .display {
+		height: calc(100% - 36px);
+	}
 }
 
 /* tool */
