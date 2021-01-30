@@ -23,4 +23,10 @@ export class AmericaController {
     const result=await this.americaService.getDataByDate(y,date);
     return result;
   }
+
+  @Get('/state')
+  async getDataByState(@Query('state') state: string) {
+    const result=await this.americaService.getDataByState(state);
+    return result;
+  }
 }

@@ -101,6 +101,10 @@ yarn build
 ```
 yarn lint
 ```
-
+### 后端启动方式
+```
+cd server
+npm run dev
+```
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
