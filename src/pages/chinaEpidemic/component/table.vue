@@ -67,6 +67,15 @@
         index(i){
             return i;
         }
+    },
+    beforeMount(){
+         const ajax = new AJAX();
+          const listURL = 'http://localhost:7001/china/city';
+          ajax.get(listURL)
+              .then((lData) => {
+                  this.tableData = lData.data;
+              })
+              .catch(e=>console.log(e));
     }
   }
 </script>
