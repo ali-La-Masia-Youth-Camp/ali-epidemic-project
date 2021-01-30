@@ -25,7 +25,7 @@ export default class App extends Vue {
         height: '100vh',
         direction: 'vertical',
         autoplay: false,
-        initialIndex: 0,
+        initialIndex: 2,
     };
 
     public renderPages(h: CreateElement) {

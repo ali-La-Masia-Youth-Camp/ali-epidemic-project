@@ -4,3 +4,4 @@ export interface IBaseInterface {
 
 export * from './state.interface';
 export * from './storage.interface';
+export * from './mock.interface';

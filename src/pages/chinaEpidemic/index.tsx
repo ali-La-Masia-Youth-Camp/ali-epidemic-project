@@ -7,6 +7,7 @@ import City from './component/city.vue';
 import Trend from './component/trend.vue';
 import Asym from './component/asymptomatic.vue';
 import './style.scss';
+import ChinaMap from '@/mock/china-province.json';
 
 @Component({
     components:{
@@ -106,104 +107,95 @@ export default class ChinaEpidemic extends Vue {
     }
 
     public beforeMount(){
-        // const ajax = new AJAX();
-        // const chinaMap = 'https://antv.vision/old-site';
-        // ajax.get(chinaMap)
-        //     .then((mapData) => {
-        //         this.data = mapData.data;
-        //     })
+        const ajax = new AJAX();
+        const chinaMap = 'http://localhost:7001/china/province';
+        ajax.get(chinaMap)
+            .then((mapData) => {
+                this.data = mapData.data;
+        }).catch(e=>console.log(e));
     }
 
     public mounted() {
-        // 请求中国地图数据
-        const ajax = new AJAX();
-        const chinaMap = 'https://antv.vision/old-site/static/data/china.json';
-        ajax.get(chinaMap)
-            .then((mapData) => {
-                const chart = new Chart({
-                    container: 'map-container',
-                    autoFit: true,
-                    // height: 600,
-                    // width:600,
-                    padding: [40, 20],
-                });
-                chart.tooltip({
-                    showTitle: false,
-                    showMarkers: false,
-                    shared: true,
-                });
-                // 同步度量
-                chart.scale({
-                    longitude: {
-                        sync: true,
-                    },
-                    latitude: {
-                        sync: true,
-                    },
-                });
-                chart.axis(false);
-
-
-                // 绘制世界地图背景
-                const ds = new DataSet();
-                const worldMap = ds.createView('back')
-                    .source(mapData.data, {
-                        type: 'GeoJSON',
-                    });
-                const worldMapView = chart.createView();
-                worldMapView.data(worldMap.rows);
-                worldMapView.tooltip(false);
-                worldMapView.polygon().position('longitude*latitude').style({
-                    fill: '#fff',
-                    stroke: '#ccc',
-                    lineWidth: 1,
-                });
-
-                // 可视化用户数据
-                const userDv = ds.createView()
-                    .source(this.data)
-                    .transform({
-                        geoDataView: worldMap,
-                        field: 'name',
-                        type: 'geo.region',
-                        as: ['longitude', 'latitude'],
-                    })
-                    .transform({
-                        type: 'map',
-                          callback: obj => {
-                            return obj;
-                          }
-                    });
-                const userView = chart.createView();
-                userView.data(userDv.rows);
-                userView.scale({
-                    value: {
-                        alias: '数量',
-                    },
-                    name: {
-                        alias: '省份',
-                    },
-                });
-                userView.polygon()
-                    .position('longitude*latitude')
-                    .color('value', ['red', 'darkred'])
-                    .tooltip('name*value')
-                    .style({
-                        fillOpacity: 0.85,
-                    })
-                    .animate({
-                        leave: {
-                            animation: 'fade-out',
-                        },
-                    });
-                userView.interaction('element-active');
-
-                chart.render();
-
+        setTimeout(()=>{
+            const chart = new Chart({
+                container: 'map-container',
+                autoFit: true,
+                padding: [40, 20],
+            });
+            chart.tooltip({
+                showTitle: false,
+                showMarkers: false,
+                shared: true,
+            });
+            // 同步度量
+            chart.scale({
+                longitude: {
+                    sync: true,
+                },
+                latitude: {
+                    sync: true,
+                },
+            });
+            chart.axis(false);
+            chart.legend('trend', {
+                position: 'left',
             });
 
+            // 绘制世界地图背景
+            const ds = new DataSet();
+            const worldMap = ds.createView('back')
+                .source(ChinaMap, {
+                    type: 'GeoJSON',
+                });
+            const worldMapView = chart.createView();
+            worldMapView.data(worldMap.rows);
+            worldMapView.tooltip(false);
+            worldMapView.polygon().position('longitude*latitude').style({
+                fill: '#fff',
+                stroke: '#ccc',
+                lineWidth: 1,
+            });
 
+            // 可视化用户数据
+            const userDv = ds.createView()
+                .source(this.data)
+                .transform({
+                    geoDataView: worldMap,
+                    field: 'name',
+                    type: 'geo.region',
+                    as: ['longitude', 'latitude'],
+                })
+                .transform({
+                    type: 'map',
+                      callback: obj => {
+                        return obj;
+                      }
+                });
+            const userView = chart.createView();
+            userView.data(userDv.rows);
+            userView.scale({
+                value: {
+                    alias: '数量',
+                },
+                name: {
+                    alias: '省份',
+                },
+            });
+            userView.polygon()
+                .position('longitude*latitude')
+                .color('value', ['#eac54d', '#ff0e05'])
+                .tooltip('name*value')
+                .style({
+                    fillOpacity: 0.85,
+                })
+                .animate({
+                    leave: {
+                        animation: 'fade-out',
+                    },
+                });
+            userView.interaction('element-active');
 
+            chart.render();
+        });
     }
-    
 }
