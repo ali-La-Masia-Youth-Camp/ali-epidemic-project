@@ -5,12 +5,15 @@ import AJAX from '@/common/ajax';
 import Table from './component/table.vue';
 import City from './component/city.vue';
 import Trend from './component/trend.vue';
-
+import Asym from './component/asymptomatic.vue';
 import './style.scss';
 
 @Component({
     components:{
-        Table
+        Table,
+        City,
+        Trend,
+        Asym
     }
 })
 export default class ChinaEpidemic extends Vue {
@@ -34,9 +37,9 @@ export default class ChinaEpidemic extends Vue {
 					</div>
 					<div class="xpanel-wrapper xpanel-wrapper-60">
 						<div class="xpanel xpanel-l-b">
-							<div class="title">近一周新增</div>
+							<div class="title">新增病例无症状占比</div>
                             <div class="display">
-                                <Table></Table>
+                                <Asym></Asym>
                             </div>
 						</div>
 					</div>
@@ -64,22 +67,51 @@ export default class ChinaEpidemic extends Vue {
                             </div>
 						</div>
 					</div>
-					{/* <div class="xpanel-wrapper xpanel-wrapper-30">
-						<div class="xpanel xpanel-r-m">
-							<div class="title"></div>
-						</div>
-					</div> */}
-					{/* <div class="xpanel-wrapper xpanel-wrapper-45">
-						<div class="xpanel xpanel-r-b">
-							<div class="title"></div>
-						</div>
-					</div> */}
 				</div>
 			</div>
 		</div>
                 </div>
             </div>
         );
+    }
+
+    public data(){
+        return {
+            data:[{
+                name: '黑龙江',
+                value: 86.8,
+            },
+            {
+                name: '山东',
+                value: 106.3,
+            },
+            {
+                name: '新疆',
+                value: 94.7,
+            },
+            {
+                name: '海南',
+                value: 98,
+            },
+            {
+                name: '四川',
+                value: 98.4,
+            },
+            {
+                name: '甘肃',
+                value: 97.2,
+            },
+        ]
+        }
+    }
+
+    public beforeMount(){
+        // const ajax = new AJAX();
+        // const chinaMap = 'https://antv.vision/old-site';
+        // ajax.get(chinaMap)
+        //     .then((mapData) => {
+        //         this.data = mapData.data;
+        //     })
     }
 
     public mounted() {
@@ -128,33 +160,8 @@ export default class ChinaEpidemic extends Vue {
                 });
 
                 // 可视化用户数据
-                const userData = [{
-                        name: '黑龙江',
-                        value: 86.8,
-                    },
-                    {
-                        name: '山东',
-                        value: 106.3,
-                    },
-                    {
-                        name: '新疆',
-                        value: 94.7,
-                    },
-                    {
-                        name: '海南',
-                        value: 98,
-                    },
-                    {
-                        name: '四川',
-                        value: 98.4,
-                    },
-                    {
-                        name: '甘肃',
-                        value: 97.2,
-                    },
-                ];
                 const userDv = ds.createView()
-                    .source(userData)
+                    .source(this.data)
                     .transform({
                         geoDataView: worldMap,
                         field: 'name',
@@ -198,4 +205,5 @@ export default class ChinaEpidemic extends Vue {
 
 
     }
+    
 }

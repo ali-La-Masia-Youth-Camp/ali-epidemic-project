@@ -24,10 +24,11 @@ export default {
         };
     },
     mounted(){
-        const chart = new Chart({
+        setTimeout(()=>{
+const chart = new Chart({
             container:'trend-container',
             autoFit:true,
-            padding:[5,5]
+            padding:[30,30]
         })
 
 
@@ -49,6 +50,8 @@ export default {
         chart.data(this.data);
         chart.interaction('element-active');
         chart.render();
+        })
+        
     }
 }
 </script>

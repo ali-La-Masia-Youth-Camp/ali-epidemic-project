@@ -24,10 +24,11 @@ export default {
         };
     },
     mounted(){
-        const chart = new Chart({
+        setTimeout(()=>{
+             const chart = new Chart({
             container:'main-city-container',
             autoFit:true,
-            padding:[10,80]
+            padding:[20,80]
         })
 
 
@@ -36,9 +37,9 @@ export default {
             .color('value',['yellow','green'])
             .label('city',{
                 style:{
-                    fill:'grey'
+                    fill:'white'
                 },
-                offset:10
+                offset:20
             });
         chart.legend(false);    
         chart.coordinate().transpose();
@@ -50,11 +51,13 @@ export default {
         chart.data(this.city);
         chart.interaction('element-active');
         chart.render();
+        })
+       
     }
 }
 </script>
 
-<style scoped>
+<style>
 #main-city-container{
     width: 100%;
     height: 100%;

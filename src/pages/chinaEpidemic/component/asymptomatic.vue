@@ -16,8 +16,8 @@ export default {
         };
     },
     mounted(){
-
-registerShape('point', 'pointer', {
+        setTimeout(()=>{
+            registerShape('point', 'pointer', {
   draw(cfg, group) {
     const point = cfg.points[0];
     const center = this.parsePoint({ x: 0, y: 0 });
@@ -129,7 +129,7 @@ chart.facet('rect', {
       content: `${percent}%`,
       style: {
         fontSize: 34,
-        fill: '#000',
+        fill: 'white',
         fontWeight: 500,
         textAlign: 'center'
       },
@@ -139,6 +139,8 @@ chart.facet('rect', {
   }
 });
 chart.render();
+        })
+
     }
 }
 </script>
