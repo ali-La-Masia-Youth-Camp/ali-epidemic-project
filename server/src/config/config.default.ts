@@ -16,13 +16,11 @@ export default (appInfo: EggAppInfo) => {
     // false 或者为空代表使用 egg-logger
     replaceEggLogger: true
   }
-
   // 跨域
   config.security = {
     csrf: {
-      enable: false,
+      enable: true,
     },
   };
-
   return config;
 };
