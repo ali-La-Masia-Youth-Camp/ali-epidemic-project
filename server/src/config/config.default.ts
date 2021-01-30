@@ -10,12 +10,23 @@ export default (appInfo: EggAppInfo) => {
 
   // add your config here
   config.middleware = [];
-  
+
   config.midwayFeature = {
     // true 代表使用 midway logger
     // false 或者为空代表使用 egg-logger
-    replaceEggLogger: true      
+    replaceEggLogger: true
   }
-
+  // 跨域
+  config.security = {
+    csrf: {
+      enable: false,
+      ignoreJSON: true,
+    },
+    domainWhiteList: [ '*'],
+  };
+  config.cors = {
+    origin: '*', // 匹配规则  域名+端口  *则为全匹配
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
+  };
   return config;
 };
