@@ -2,7 +2,10 @@ import {Component, Vue} from 'vue-property-decorator';
 import {Chart} from '@antv/g2';
 import DataSet from '@antv/data-set';
 import AJAX from '@/common/ajax';
-import Table from './component/table.vue'
+import Table from './component/table.vue';
+import City from './component/city.vue';
+import Trend from './component/trend.vue';
+
 import './style.scss';
 
 @Component({
@@ -25,7 +28,7 @@ export default class ChinaEpidemic extends Vue {
 						<div class="xpanel xpanel-l-t">
 							<div class="title">重点城市</div>
                             <div class="display">
-                                <Table></Table>
+                                <City></City>
                             </div>
 						</div>
 					</div>
@@ -45,26 +48,32 @@ export default class ChinaEpidemic extends Vue {
 					</div>
 					<div class="xpanel-wrapper xpanel-wrapper-25">
 						<div class="xpanel xpanel-c-b">
-							<div class="title title-long"></div>
+							<div class="title title-long">全国新增病例趋势</div>
+                            <div class="display">
+                                <Trend></Trend>
+                            </div>
 						</div>
 					</div>
 				</div>
 				<div class="col col-r">
-					<div class="xpanel-wrapper xpanel-wrapper-25">
+					<div class="xpanel-wrapper xpanel-wrapper-100">
 						<div class="xpanel xpanel-r-t">
-							<div class="title"></div>
+                        <div class="title">近一周新增</div>
+                            <div class="display">
+                                <Table></Table>
+                            </div>
 						</div>
 					</div>
-					<div class="xpanel-wrapper xpanel-wrapper-30">
+					{/* <div class="xpanel-wrapper xpanel-wrapper-30">
 						<div class="xpanel xpanel-r-m">
 							<div class="title"></div>
 						</div>
-					</div>
-					<div class="xpanel-wrapper xpanel-wrapper-45">
+					</div> */}
+					{/* <div class="xpanel-wrapper xpanel-wrapper-45">
 						<div class="xpanel xpanel-r-b">
 							<div class="title"></div>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</div>
