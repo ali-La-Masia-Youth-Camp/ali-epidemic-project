@@ -1,15 +1,20 @@
 import { Component, Vue } from 'vue-property-decorator';
+import { CreateElement } from 'vue';
 import DataSet from '@antv/data-set';
+import NumberRoll from '@/components/numberRoll';
 import { Chart, View, registerInteraction } from '@antv/g2';
 import USAJson from '@/mock/usa.json';
 import USAStateJson from '@/mock/foreign-list.json';
-import { IUSAStateEpidemic } from '@/interfaces';
+import USAEpidemicJson from '@/mock/usa-epidemic.json';
+import { IUSAStateEpidemic, IUSAEpidemicData } from '@/interfaces';
 import { findMaxComfirmFromGeoData, findMinComfirmFromGeoData } from '@/utlis/array.utli';
 import './style.scss';
-import { InteractionSteps } from '@antv/g2/lib/interaction/grammar-interaction';
-import { InteractionConstructor } from '@antv/g2/lib/interaction/interaction';
 
-@Component({})
+@Component({
+    components: {
+        NumberRoll,
+    },
+})
 export default class UsaEpidemic extends Vue {
     public mapData!: any; // 原始地图数据
 
@@ -22,12 +27,22 @@ export default class UsaEpidemic extends Vue {
     public view!: View;
 
     public backgroundView!: View;
+
     public dataset!: any;
+
+    public usaNewestData: IUSAEpidemicData = USAEpidemicJson.data[USAEpidemicJson.data.length - 1].confirm;
 
     public $refs!: {
         usaMap: HTMLDivElement,
     };
 
+    /**
+     * 对偏离美国整体地图较远的州的经纬度进行变换
+     * @param source 需要进行变换的州的数据
+     * @param name 州名
+     * @param latStep 纬度变化步数
+     * @param longStep 经度变化步数
+     */
     public scaleState(source: any, name: string, latStep: number, longStep: number) {
         const state = source.rows.find((row: any) => row.name === name);
         const stateIndex = source.rows.findIndex((row: any) => row.name === name);
@@ -43,6 +58,9 @@ export default class UsaEpidemic extends Vue {
         source.rows.splice(stateIndex, 1, state);
     }
 
+    /**
+     * 设置 tooltip
+     */
     public setTooltip() {
         if (this.chart) {
             this.chart.tooltip({
@@ -51,6 +69,9 @@ export default class UsaEpidemic extends Vue {
         }
     }
 
+    /**
+     * 设置 scale
+     */
     public setScale() {
         if (this.chart) {
             this.chart.scale({
@@ -64,25 +85,21 @@ export default class UsaEpidemic extends Vue {
         }
     }
 
+    /**
+     * 设置坐标轴
+     * @param axis 是否显示坐标轴
+     */
     public setAxis(axis: boolean) {
         if (this.chart) {
             this.chart.axis(axis);
         }
     }
 
-    public initOptions() {
-        this.setTooltip();
-        this.setScale();
-        this.setLegend(false);
-        this.setAxis(false);
-    }
-
-    public handleChartActions() {
-        this.registerStateClick();
-
-        this.listenChartClick();
-    }
-
+    /**
+     * 设置图例
+     * @param legend 是否显示，如果传入 string 表示需要显示的字段
+     * @param config 显示配置
+     */
     public setLegend(legend: boolean | string, config?: any) {
         if (this.chart) {
             if (typeof legend === 'boolean') {
@@ -93,6 +110,28 @@ export default class UsaEpidemic extends Vue {
         }
     }
 
+    /**
+     * Chart初始化操作，包括设置 tooltip，设置 scale，设置图例(legend)，设置坐标轴
+     */
+    public initOptions() {
+        this.setTooltip();
+        this.setScale();
+        this.setLegend(false);
+        this.setAxis(false);
+    }
+
+    /**
+     * 注册 Chart 的动作
+     */
+    public handleChartActions() {
+        this.registerStateClick();
+
+        this.listenChartClick();
+    }
+
+    /**
+     * 注册地图点击手势
+     */
     public registerStateClick() {
         registerInteraction('state-click', {
             showEnable: [
@@ -104,6 +143,10 @@ export default class UsaEpidemic extends Vue {
         });
     }
 
+    /**
+     * 获取点击的州的数据
+     * @param cb 回调函数，入参为获取到的州数据
+     */
     public getClickStateData(cb: any) {
         this.chart.on('element:click', (ev: any) => {
             const stateData = ev.data.data;
@@ -113,6 +156,10 @@ export default class UsaEpidemic extends Vue {
         });
     }
 
+    /**
+     * 获取州的坐标数据
+     * @param name 州名字
+     */
     public getStateCoordinates(name: string) {
         return {
             type: 'FeatureCollection',
@@ -241,6 +288,14 @@ export default class UsaEpidemic extends Vue {
         this.chart.render();
     }
 
+    public renderNumberRoll(h: CreateElement) {
+        return h(this.$options.components!.NumberRoll, {
+            props: {
+                rollNumber: this.usaNewestData,
+            },
+        });
+    }
+
     public mounted() {
         this.mapData = USAJson;
         this.epidemicData = USAStateJson.data.children;
@@ -270,13 +325,24 @@ export default class UsaEpidemic extends Vue {
         this.renderChart();
     }
 
-    public render() {
+    public render(h: CreateElement) {
         return (
             <div class='fullpage-container__section usa-epidemic'>
-                <div
-                    id='usa-map__container'
-                    ref='usaMap'
-                ></div>
+                <div class='left-container'>
+
+                </div>
+                <div class='middle-container'>
+                    {
+                        this.renderNumberRoll(h)
+                    }
+                    <div
+                        id='usa-map__container'
+                        ref='usaMap'
+                    ></div>
+                </div>
+                <div class='right-container'>
+
+                </div>
             </div>
         );
     }
