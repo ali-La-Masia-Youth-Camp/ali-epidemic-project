@@ -29,7 +29,10 @@
 </template>
 
 <script>
-  export default {
+import {AJAX} from '@/common/ajax';
+
+
+export default {
     data() {
       return {
         tableData: [{
@@ -77,7 +80,7 @@
               })
               .catch(e=>console.log(e));
     }
-  }
+}
 </script>
 <style >
     .table{
