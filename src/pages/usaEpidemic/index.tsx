@@ -1,11 +1,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import DataSet from '@antv/data-set';
-import { Chart, View } from '@antv/g2';
+import { Chart, View, registerInteraction } from '@antv/g2';
 import USAJson from '@/mock/usa.json';
 import USAStateJson from '@/mock/foreign-list.json';
 import { IUSAStateEpidemic } from '@/interfaces';
 import { findMaxComfirmFromGeoData, findMinComfirmFromGeoData } from '@/utlis/array.utli';
 import './style.scss';
+import { InteractionSteps } from '@antv/g2/lib/interaction/grammar-interaction';
+import { InteractionConstructor } from '@antv/g2/lib/interaction/interaction';
 
 @Component({})
 export default class UsaEpidemic extends Vue {
@@ -72,6 +74,25 @@ export default class UsaEpidemic extends Vue {
                 this.chart.legend(legend, config);
             }
         }
+    }
+
+    public registerStateClick() {
+        registerInteraction('state-click', {
+            showEnable: [
+                { trigger: 'plot:mouseenter', action: 'cursor:pointer' },
+                { trigger: 'mask:mouseenter', action: 'cursor:move' },
+                { trigger: 'plot:mouseleave', action: 'cursor:default' },
+                { trigger: 'mask:mouseleave', action: 'cursor:pointer' },
+            ],
+            start: [
+                { trigger: 'plot:click', isEnable(context) {
+                    console.log(context);
+                    return false;
+                }, action: ['scale-zoom:zoomOut'] }
+            ],
+            processing: [],
+            end: [],
+        });
     }
 
     /**
@@ -161,6 +182,7 @@ export default class UsaEpidemic extends Vue {
             });
 
         userView.interaction('element-active');
+        userView.interaction('state-click');
     }
 
     public renderChart() {
@@ -170,6 +192,7 @@ export default class UsaEpidemic extends Vue {
     public mounted() {
         this.mapData = USAJson;
         this.epidemicData = USAStateJson.data.children;
+
         this.chart = new Chart({
             container: 'usa-map__container',
             autoFit: true,
@@ -180,6 +203,8 @@ export default class UsaEpidemic extends Vue {
 
         const maxConfirmState = findMaxComfirmFromGeoData(this.epidemicData);
         const minConfirmState = findMinComfirmFromGeoData(this.epidemicData);
+
+        this.registerStateClick();
 
         this.setTooltip();
 
