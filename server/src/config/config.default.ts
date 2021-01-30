@@ -10,12 +10,19 @@ export default (appInfo: EggAppInfo) => {
 
   // add your config here
   config.middleware = [];
-  
+
   config.midwayFeature = {
     // true 代表使用 midway logger
     // false 或者为空代表使用 egg-logger
-    replaceEggLogger: true      
+    replaceEggLogger: true
   }
+
+  // 跨域
+  config.security = {
+    csrf: {
+      enable: false,
+    },
+  };
 
   return config;
 };
