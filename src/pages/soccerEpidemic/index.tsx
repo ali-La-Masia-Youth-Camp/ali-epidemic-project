@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-29 18:13:19
- * @LastEditTime: 2021-01-31 22:19:02
+ * @LastEditTime: 2021-01-31 22:49:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ali-epidemic-project\src\pages\soccerEpidemic\index.tsx
@@ -9,10 +9,15 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Scene, Marker, PointLayer, Popup } from '@antv/l7';
 import { GaodeMap } from '@antv/l7-maps';
-import leagueList from './mock/leagueList.json'
+import leagueList from './mock/leagueList.json';
+import Table from './component/table.vue';
 import './style.scss';
 
-@Component({})
+@Component({
+    components: {
+        Table,
+    }
+})
 export default class SoccerEpidemic extends Vue {
 
     public leagueListData!: any;
@@ -39,7 +44,7 @@ export default class SoccerEpidemic extends Vue {
             el5.src = 'uefa.png';
             el5.width = 120;
             el5.height = 120;
-            el5.onclick=function(){
+            el5.onclick = function () {
                 window.open("https://soccer.hupu.com/uefa/");
             }
             const marker5 = new Marker({ element: el5 }).setLnglat({ lng: -7.5852328, lat: 36.864434 });
@@ -56,7 +61,7 @@ export default class SoccerEpidemic extends Vue {
                     el.height = 65;
                 }
                 let href = '';
-                switch(item.league_Name){
+                switch (item.league_Name) {
                     case 'xj':
                         href = 'spain';
                         break;
@@ -70,10 +75,10 @@ export default class SoccerEpidemic extends Vue {
                         href = 'england';
                         break;
                     default:
-                        href = 'uefa'  
+                        href = 'uefa'
                 }
-                el.onclick=function(){
-                    window.open("https://soccer.hupu.com/"+href);
+                el.onclick = function () {
+                    window.open("https://soccer.hupu.com/" + href);
                 }
                 let marker = new Marker({ element: el }).setLnglat({ lng: item.league_lng, lat: item.league_lat });
                 scene.addMarker(marker);
@@ -116,6 +121,9 @@ export default class SoccerEpidemic extends Vue {
         return (
             <div class='fullpage-container__section'>
                 <div id="soccer-container" ></div>
+                <div class="display-table">
+                    <Table></Table>
+                </div>
             </div>
         );
     }
