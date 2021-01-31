@@ -10,3 +10,11 @@ export interface IUSAStateEpidemic {
     dead: number;
     heal: number;
 }
+
+export interface IUSAEpidemicData {
+    y: string;
+    date: string;
+    confirm_add: number;
+    heal: number;
+    dead: number;
+}
