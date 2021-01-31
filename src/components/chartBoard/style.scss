@@ -8,11 +8,11 @@
         .border-sourround{
             span{
                 position: absolute;
-                width: 3px;
+                width: 2px;
                 height: 20px;
-                background-color: black;
+                background-color: rgba(238, 238, 238, .6);
                 &.top-top-left{
-                    top: 3px;
+                    top: 2px;
                     transform: rotate(-90deg);
                     transform-origin: 0 0;
                 }
@@ -47,6 +47,9 @@
         .chart-container{
             height: 100%;
             padding: 0;
+            .title{
+                color: #eeeeee;
+            }
         }
     }
 }

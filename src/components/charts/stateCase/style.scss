@@ -18,9 +18,11 @@
             top: 0;
             left: 0;
             right: 0;
+            background-color: rgba(0, 0, 0, .1);
             span{
                 display: inline-block;
                 flex: 1;
+                text-shadow: 0 0 2px rgba(255, 255, 255, .1);
             }
             span:not(:nth-of-type(1)) {
                 text-align: center;
@@ -28,18 +30,15 @@
             span:nth-of-type(1) {
                 flex-basis: 85px;
                 padding-left: 8px;
-                background-color: #f2f5f7;
+                color: #eeeeee;
             }
             span:nth-of-type(2) {
-                background-color: #fdeeee;
                 color: #f55253;
             }
             span:nth-of-type(3) {
-                background-color: #e9f7ec;
                 color: #178b50;
             }
             span:nth-of-type(4) {
-                background-color: #f2f2f2;
                 color: #66666c;
             }
         }
@@ -47,13 +46,14 @@
             height: 125px;
             margin-top: 32px;
             overflow-y: scroll;
+            color: #eeeeee;
             &::-webkit-scrollbar{
                 display: none;
             }
             .state-figure__content-item{
                 display: flex;
                 line-height: 2.5;
-                border-bottom: 1px solid #eeeeee;
+                border-bottom: 1px solid rgba($color: #eeeeee, $alpha: .6);
                 span{
                     display: inline-block;
                     flex: 1;

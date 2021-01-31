@@ -52,8 +52,10 @@ export default class TopFiveState extends Vue {
                     },
                     style: {
                         textAlign: 'center',
+                        fill: '#ffffff',
                     },
-                    offsetY: -30,
+                    offsetY: 0,
+                    offsetX: -22,
                 });
         });
 

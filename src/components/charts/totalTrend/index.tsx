@@ -54,9 +54,9 @@ export default class TotalTrend extends Vue {
         this.chart.legend({
             custom: true,
             items: [
-              { name: '累计确诊', value: 'confirm', marker: { symbol: 'square', style: { fill: 'red' } } },
-              { name: '累计死亡', value: 'dead', marker: { symbol: 'square', style: { fill: 'black' } } },
-              { name: '累计治愈', value: 'heal', marker: { symbol: 'square', style: { fill: 'green' } } },
+              { name: '累计确诊', value: 'confirm', marker: { symbol: 'square', style: { fill: 'red', color: '#eeeeee' } } },
+              { name: '累计死亡', value: 'dead', marker: { symbol: 'square', style: { fill: 'yellow', color: '#eeeeee' } } },
+              { name: '累计治愈', value: 'heal', marker: { symbol: 'square', style: { fill: 'green', color: '#eeeeee' } } },
             ],
         });
 
@@ -64,7 +64,7 @@ export default class TotalTrend extends Vue {
         this.chart.axis('heal', false);
 
         this.chart.line().position('date*confirm').color('red');
-        this.chart.line().position('date*dead').color('black');
+        this.chart.line().position('date*dead').color('yellow');
         this.chart.line().position('date*heal').color('green');
         this.chart.interaction('element-active');
 

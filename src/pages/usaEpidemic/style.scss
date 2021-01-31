@@ -1,6 +1,8 @@
 .usa-epidemic{
     height: 100vh;
     display: flex;
+    background: url('../chinaEpidemic//img/background.jpg');
+    background-size: cover;
     .left-container, .right-container{
         flex: 1;
         display: flex;
