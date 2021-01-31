@@ -1,0 +1,24 @@
+[
+  {
+    "id":1,
+    "player_name":"扎卡尔",
+    "player_nationality":"",
+    "player_age":1,
+    "player_league":"西甲",
+    "player_team":"皇马",
+    confirm_date:"2020/11/09",
+    heal_date:"",
+    info:""
+  },
+    {
+      "id":2,
+      "player_name":"卡塞米罗",
+      "player_nationality":"",
+      "player_age":1,
+      "player_league":"西甲",
+      "player_team":"皇马",
+      confirm_date:"2020/11/09",
+      heal_date:"",
+      info:""
+    }
+]
