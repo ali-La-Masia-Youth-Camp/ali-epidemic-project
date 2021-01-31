@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-29 18:13:19
- * @LastEditTime: 2021-01-31 17:29:45
+ * @LastEditTime: 2021-01-31 17:37:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ali-epidemic-project\src\pages\soccerEpidemic\index.tsx
@@ -51,6 +51,9 @@ export default class SoccerEpidemic extends Vue {
                 if (item.league_Name === 'yj') {
                     el.width = 60;
                     el.height = 65;
+                }
+                el.onclick=function(){
+                    window.open("https://www.goal.com/zh-cn/%E7%B1%BB%E5%88%AB/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/1/1pgecmpab62ei1akyb084izq3o")
                 }
                 let marker = new Marker({ element: el }).setLnglat({ lng: item.league_lng, lat: item.league_lat });
                 scene.addMarker(marker);
