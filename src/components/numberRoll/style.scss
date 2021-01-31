@@ -1,0 +1,32 @@
+.epidemic-number__visual{
+    .title{
+        line-height: 3;
+    }
+    .roll-container{
+        margin-left: 18px;
+        .visual-item{
+            background: url('../../assets/scrollNumberBg.jpg');
+            background-size: cover;
+            position: relative;
+            display: inline-block;
+            width: 45px;
+            height: 72px;
+            box-sizing: border-box;
+            border: 1px solid #eeeeee;
+            border-radius: 3px;
+            font-size: 54px;
+            line-height: 72px;
+            text-align: center;
+            overflow: hidden;
+            color: #CD4100;
+            div{
+                div{
+                    user-select: none;
+                    text-shadow: 0 0 2px rgba($color: #ffffff, $alpha: 1);
+                    height: 72px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
