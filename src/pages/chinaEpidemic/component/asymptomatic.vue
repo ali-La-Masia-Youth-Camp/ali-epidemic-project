@@ -4,7 +4,6 @@
 
 <script>
 import { Chart, registerShape } from '@antv/g2';
-import AJAX from '@/common/ajax';
 
 export default {
     name: 'asym',

@@ -1,7 +1,8 @@
 <template>
     <div class="map-container">
         <div class="map-title">一月疫情地图</div>
-        <div id="china-map-container"></div>
+        <div id="china-map-container" ref="container"></div>
+        <div id="province-hint" ref="hint"></div>
     </div>
 </template>
 
@@ -11,6 +12,7 @@ import DataSet from '@antv/data-set';
 import AJAX from '@/common/ajax';
 import ChinaMap from '@/mock/china-province.json';
 import {Message} from 'element-ui';
+import showHint from '../util/click';
 
 export default {
     name: 'china-map',
@@ -42,10 +44,17 @@ export default {
                     value: 97.2,
                 },
             ],
+            x: 0,
+            y: 0,
         };
     },
 
     mounted() {
+        this.$refs.container.addEventListener('click', (e) => {
+            this.x = e.x;
+            this.y = e.y;
+        });
+
         const ajax = new AJAX();
         const provinceURL = 'http://localhost:7001/china/province';
         ajax.get(provinceURL)
@@ -54,7 +63,7 @@ export default {
                 if (pData.isOk) {
                     this.$has = pData.data.filter((item) => item.value !== 0);
                     // this.data.no = pData.data.filter((item) => item.value === 0);
-                    // this.data = pData.data;
+                    // this.data = pData.data;                    
                     this.render();
                 } else {
                     console.error('map');
@@ -67,13 +76,15 @@ export default {
             }); 
     },
     methods: {
-        render() {
+        render(){
             setTimeout(() => {
                 const chart = new Chart({
                     container: 'china-map-container',
                     autoFit: true,
                     padding: [40, 20],
                 });
+                showHint(chart,this);
+
                 chart.tooltip({
                     showTitle: false,
                     showMarkers: false,
@@ -108,9 +119,6 @@ export default {
                                 stroke: '#ccc',
                                 lineWidth: 1,
                             });
-                // worldMapView.legend('中国',{
-                //     position: 'top',
-                // });
                 // 可视化用户数据
                 this.userData(this.$has, ['#FF0000', '#220000'], ds, chart, worldMap);
                 // this.userData(this.data.no, ['white'], ds, chart, worldMap);
@@ -178,5 +186,14 @@ export default {
     line-height: 40px;
     font-size: 20px;
     text-align: center;
+}
+#province-hint{
+    width: 30%;
+    height: 30%;
+    background: white;
+    position: absolute;
+    display: none;
+    z-index: 999;
+    border-radius: 5px;
 }
 </style>
