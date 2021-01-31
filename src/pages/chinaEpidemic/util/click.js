@@ -60,7 +60,7 @@ function draw(){
       
       // 添加文本标注
       data.forEach((item) => {
-        view
+         view
           .annotation()
           .text({
             position: [item.type, item.value],
@@ -69,7 +69,7 @@ function draw(){
               textAlign: 'center',
             },
             offsetY: -30,
-          })
+          });
       });
       chart.render();
       return view;

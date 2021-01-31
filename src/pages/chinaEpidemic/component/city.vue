@@ -40,7 +40,7 @@ export default {
                     }
                 })
                 .catch((e) => {
-                    console.error(e,'city');
+                    // console.error(e,'city');
                     Message.error(e);
                 });
     },

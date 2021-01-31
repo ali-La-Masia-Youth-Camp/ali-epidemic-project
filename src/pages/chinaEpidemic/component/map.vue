@@ -61,17 +61,15 @@ export default {
             .then((rep) => {
                 const pData = rep.data;
                 if (pData.isOk) {
-                    this.$has = pData.data.filter((item) => item.value !== 0);
-                    // this.data.no = pData.data.filter((item) => item.value === 0);
-                    // this.data = pData.data;                    
+                    this.$has = pData.data.filter((item) => item.value !== 0);                  
                     this.render();
                 } else {
-                    console.error('map');
+                    // console.error('map');
                     Message.error(pData.error);
                 }
             })
             .catch((e) => {
-                console.error('map');
+                // console.error('map');
                 Message.error(e);
             }); 
     },
@@ -121,7 +119,6 @@ export default {
                             });
                 // 可视化用户数据
                 this.userData(this.$has, ['#FF0000', '#220000'], ds, chart, worldMap);
-                // this.userData(this.data.no, ['white'], ds, chart, worldMap);
                 chart.render();
             });
         },
