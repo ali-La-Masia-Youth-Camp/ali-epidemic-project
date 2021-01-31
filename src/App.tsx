@@ -7,6 +7,7 @@ import FirstPage from './pages/firstPage';
 import SoccerEpidemic from './pages/soccerEpidemic';
 import './style.scss';
 import './reset.scss';
+import './fonts/iconfont.css';
 
 @Component({
     components: {
