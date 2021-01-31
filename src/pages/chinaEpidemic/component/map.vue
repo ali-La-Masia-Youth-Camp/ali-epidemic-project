@@ -1,5 +1,8 @@
 <template>
-    <div id="china-map-container"></div>
+    <div class="map-container">
+        <div class="map-title">一月疫情地图</div>
+        <div id="china-map-container"></div>
+    </div>
 </template>
 
 <script>
@@ -10,10 +13,10 @@ import ChinaMap from '@/mock/china-province.json';
 import {Message} from 'element-ui';
 
 export default {
-    name:'china-map',
-    data(){
+    name: 'china-map',
+    data() {
         return {
-            data:[
+            data: [
                 {
                     name: '黑龙江',
                     value: 86.8,
@@ -37,117 +40,143 @@ export default {
                 {
                     name: '甘肃',
                     value: 97.2,
-                }
-            ]
-        }
+                },
+            ],
+        };
     },
 
-    beforeMount() {
+    mounted() {
         const ajax = new AJAX();
         const provinceURL = 'http://localhost:7001/china/province';
         ajax.get(provinceURL)
             .then((rep) => {
                 const pData = rep.data;
                 if (pData.isOk) {
-                    this.data = pData.data.filter(item=>item.value!==0);
+                    this.$has = pData.data.filter((item) => item.value !== 0);
+                    // this.data.no = pData.data.filter((item) => item.value === 0);
+                    // this.data = pData.data;
                     this.render();
                 } else {
+                    console.error('map');
                     Message.error(pData.error);
                 }
             })
-            .catch((e) =>  Message.error(pData.error));
+            .catch((e) => {
+                console.error('map');
+                Message.error(e);
+            }); 
     },
-    methods:{
+    methods: {
         render() {
-        setTimeout(() => {
-            const chart = new Chart({
-                container: 'china-map-container',
-                autoFit: true,
-                padding: [40, 20],
-            });
-            chart.tooltip({
-                showTitle: false,
-                showMarkers: false,
-                shared: true,
-            });
-            // 同步度量
-            chart.scale({
-                longitude: {
-                    sync: true,
-                },
-                latitude: {
-                    sync: true,
-                },
-            });
-            chart.axis(false);
-            chart.legend('trend', {
-                position: 'left',
-            });
-            // 绘制世界地图背景
-            const ds = new DataSet();
-            const worldMap = ds.createView('back')
-                .source(ChinaMap, {
-                    type: 'GeoJSON',
+            setTimeout(() => {
+                const chart = new Chart({
+                    container: 'china-map-container',
+                    autoFit: true,
+                    padding: [40, 20],
                 });
-            const worldMapView = chart.createView();
-            worldMapView.data(worldMap.rows);
-            worldMapView.tooltip(false);
-            worldMapView.polygon()
-                        .position('longitude*latitude')
-                        .style({
-                            fill: '#fff',
-                            stroke: '#ccc',
-                            lineWidth: 1,
-                        });
-            // 可视化用户数据
-            const userDv = ds.createView()
-                            .source(this.data)
-                            .transform({
-                                geoDataView: worldMap,
-                                field: 'name',
-                                type: 'geo.region',
-                                as: ['longitude', 'latitude']
-                            })
-                            .transform({
-                                type: 'map',
-                                callback: (obj) => {
-                                    return obj;
-                                },
-                            });
-            const userView = chart.createView();
-            userView.data(userDv.rows);
-            userView.scale({
-                value: {
-                    alias: '数量',
-                },
-                name: {
-                    alias: '省份',
-                }
-            });
-            userView.polygon()
-                .position('longitude*latitude')
-                .color('value', ['#eac54d', '#ff0e05'])
-                .tooltip('name*value')
-                .style({
-                    fillOpacity: 0.85,
-                })
-                .animate({
-                    leave: {
-                        animation: 'fade-out',
+                chart.tooltip({
+                    showTitle: false,
+                    showMarkers: false,
+                    shared: true,
+                });
+                // 同步度量
+                chart.scale({
+                    longitude: {
+                        sync: true,
+                    },
+                    latitude: {
+                        sync: true,
                     },
                 });
-            userView.interaction('element-active');
-            chart.render();
-        });
-    }
-    }
-  
-}
+                chart.axis(false);
+                chart.legend('trend', {
+                    position: 'left',
+                });
+                // 绘制世界地图背景
+                const ds = new DataSet();
+                const worldMap = ds.createView('back')
+                    .source(ChinaMap, {
+                        type: 'GeoJSON',
+                    });
+                const worldMapView = chart.createView();
+                worldMapView.data(worldMap.rows);
+                worldMapView.tooltip(false);
+                worldMapView.polygon()
+                            .position('longitude*latitude')
+                            .style({
+                                fill: '#fff',
+                                stroke: '#ccc',
+                                lineWidth: 1,
+                            });
+                // worldMapView.legend('中国',{
+                //     position: 'top',
+                // });
+                // 可视化用户数据
+                this.userData(this.$has, ['#FF0000', '#220000'], ds, chart, worldMap);
+                // this.userData(this.data.no, ['white'], ds, chart, worldMap);
+                chart.render();
+            });
+        },
+
+        userData(data,color,ds,chart,worldMap){
+            const userDv = ds.createView()
+                                .source(data)
+                                .transform({
+                                    geoDataView: worldMap,
+                                    field: 'name',
+                                    type: 'geo.region',
+                                    as: ['longitude', 'latitude'],
+                                })
+                                .transform({
+                                    type: 'map',
+                                    callback: (obj) => {
+                                        return obj;
+                                    },
+                                });
+                const userView = chart.createView();
+                userView.data(userDv.rows);
+                userView.scale({
+                    value: {
+                        alias: '数量',
+                    },
+                    name: {
+                        alias: '省份',
+                    },
+                });
+                userView.polygon()
+                    .position('longitude*latitude')
+                    .color('value', color)
+                    .tooltip('name*value')
+                    .style({
+                        fillOpacity: 0.85,
+                    })
+                    .animate({
+                        leave: {
+                            animation: 'fade-out',
+                        },
+                    });
+                userView.interaction('element-active');
+        }
+    },
+};
 </script>
 
 <style>
-#china-map-container{
+.map-container{
     width: 100%;
     height: 100%;
+}
+#china-map-container{
+    width: 100%;
+    height: 90%;
+}
+.map-title{
+    width: 100%;
+    height: 40px;
+    margin: 0;
+    color: orange;
+    line-height: 40px;
+    font-size: 20px;
+    text-align: center;
 }
 </style>

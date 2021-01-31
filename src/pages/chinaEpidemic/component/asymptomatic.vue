@@ -7,52 +7,52 @@ import { Chart, registerShape } from '@antv/g2';
 import AJAX from '@/common/ajax';
 
 export default {
-    name:'asym',
-    data(){
+    name: 'asym',
+    data() {
         return {
-            city:[
+            city: [
                 { status: '无', value: 34 },
                 { status: '有', value: 85 },
-            ]
+            ],
         };
     },
 
-    mounted(){
-        setTimeout(()=>{
+    mounted() {
+        setTimeout(() => {
             registerShape('point', 'pointer', {
             draw(cfg, group) {
             const point = cfg.points[0];
             const center = this.parsePoint({ x: 0, y: 0 });
             const target = this.parsePoint({ x: point.x, y: 0.9 });
-            const dir_vec = { x: center.x - target.x, y: center.y - target.y };
+            const dirVec = { x: center.x - target.x, y: center.y - target.y };
             // normalize
-            const length = Math.sqrt(dir_vec.x * dir_vec.x + dir_vec.y * dir_vec.y);
-            dir_vec.x *= (1 / length);
-            dir_vec.y *= (1 / length);
-            // rotate dir_vector by -90 and scale
+            const length = Math.sqrt(dirVec.x * dirVec.x + dirVec.y * dirVec.y);
+            dirVec.x *= (1 / length);
+            dirVec.y *= (1 / length);
+            // rotate dirVector by -90 and scale
             const angle1 = -Math.PI / 2;
-            const x_1 = Math.cos(angle1) * dir_vec.x - Math.sin(angle1) * dir_vec.y;
-            const y_1 = Math.sin(angle1) * dir_vec.x + Math.cos(angle1) * dir_vec.y;
-            // rotate dir_vector by 90 and scale
+            const x1 = Math.cos(angle1) * dirVec.x - Math.sin(angle1) * dirVec.y;
+            const y1 = Math.sin(angle1) * dirVec.x + Math.cos(angle1) * dirVec.y;
+            // rotate dirVector by 90 and scale
             const angle2 = Math.PI / 2;
-            const x_2 = Math.cos(angle2) * dir_vec.x - Math.sin(angle2) * dir_vec.y;
-            const y_2 = Math.sin(angle2) * dir_vec.x + Math.cos(angle2) * dir_vec.y;
+            const x2 = Math.cos(angle2) * dirVec.x - Math.sin(angle2) * dirVec.y;
+            const y2 = Math.sin(angle2) * dirVec.x + Math.cos(angle2) * dirVec.y;
             // polygon vertex
             const path = [
-              ['M', target.x + x_1 * 1, target.y + y_1 * 1],
-              ['L', center.x + x_1 * 3, center.y + y_1 * 3],
-              ['L', center.x + x_2 * 3, center.y + y_2 * 3],
-              ['L', target.x + x_2 * 1, target.y + y_2 * 1],
-              ['Z']
+              ['M', target.x + x1 * 1, target.y + y1 * 1],
+              ['L', center.x + x1 * 3, center.y + y1 * 3],
+              ['L', center.x + x2 * 3, center.y + y2 * 3],
+              ['L', target.x + x2 * 1, target.y + y2 * 1],
+              ['Z'],
             ];
             const tick = group.addShape('path', {
               attrs: {
                 path,
-                fill: cfg.color
-              }
+                fill: cfg.color,
+              },
             });
             return tick;
-          }
+          },
         });
 
             const data = [
@@ -68,7 +68,7 @@ export default {
             chart.coordinate('polar', {
               startAngle: -10 / 8 * Math.PI,
               endAngle: 2 / 8 * Math.PI,
-              radius: 0.75
+              radius: 0.75,
             });
             chart.scale('value', {
               min: 0,
@@ -80,7 +80,7 @@ export default {
               fields: ['type'],
               showTitle: false,
               eachView: function eachView(view, facet) {
-                const data = facet.data[0];
+                const fdata = facet.data[0];
                 // 指针
                 view
                   .point()
@@ -99,31 +99,31 @@ export default {
                   end: [1, 1],
                   style: {
                     stroke: '#ebedf0',
-                    lineWidth: 10
-                  }
+                    lineWidth: 10,
+                  },
                 });
                 // 仪表盘前景
                 view.annotation().arc({
                   start: [0, 1],
-                  end: [data.value, 1],
+                  end: [fdata.value, 1],
                   style: {
                     stroke: '#1890ff',
-                    lineWidth: 10
-                  }
+                    lineWidth: 10,
+                  },
                 });
                 // 仪表盘信息
-                const percent = parseInt(data.value * 100, 10);
+                const percent = parseInt(fdata.value * 100, 10);
 
                 view.annotation().text({
                   position: ['50%', '70%'],
-                  content: data.type,
+                  content: fdata.type,
                   style: {
                     fontSize: 14,
                     fill: '#8c8c8c',
                     fontWeight: 300,
-                    textAlign: 'center'
+                    textAlign: 'center',
                   },
-                  offsetX: 0
+                  offsetX: 0,
                 });
                 view.annotation().text({
                   position: ['50%', '75%'],
@@ -132,17 +132,17 @@ export default {
                     fontSize: 34,
                     fill: 'white',
                     fontWeight: 500,
-                    textAlign: 'center'
+                    textAlign: 'center',
                   },
                   offsetX: 0,
-                  offsetY: 10
+                  offsetY: 10,
                 });
-              }
+              },
             });
             chart.render();
         });
-    }
-}
+    },
+};
 </script>
 
 <style scoped>

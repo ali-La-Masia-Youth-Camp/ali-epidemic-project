@@ -32,49 +32,51 @@ export default {
         ajax.get(trendURL)
             .then((req) => {
                  const tData= req.data;
-                        console.log(tData);
-                    //后端bug
-                    if(!tData.isOk){
-                        console.log(tData);
-                        this.data = tData.data.sort((a,b)=>a>=b);
-                        this.render();
-                    }else{
-                        Message.error(tData.error);
-                    }
+                //后端bug,返回的是false
+                if(!tData.isOk){
+                    // console.log(tData);
+                    
+                    this.data = tData.data.sort((a,b)=>a>=b);
+                    this.render();
+                }else{
+                    Message.error(tData.error);
+                }
             })
-            .catch(e=>console.log(e));
+            .catch((e) => {
+                console.error('trend');
+                Message.error(e);
+            });
     },
     methods:{
             render(){
-        setTimeout(()=>{
-            const chart = new Chart({
-                container:'trend-container',
-                autoFit:true,
-                padding:[0,0,25,35]
-            });
-            chart.line()
-                .position('date*value')
-                .color('value',['yellow','green']);
-            // chart.point().position('date*value');
-            chart.legend(false);    
-            chart.tooltip({
-                showCrosshairs: true, // 展示 Tooltip 辅助线
-                shared: true,
-            });
-            // chart.coordinate().transpose();
-            chart.scale({
-                value:{
-                    alias:'当日确诊数量'
-                }
-            });
-            chart.data(this.data);
-            chart.interaction('element-active');
-            chart.render();
-            });  
-    }
-    }
-
-}
+                setTimeout(()=>{
+                    const chart = new Chart({
+                        container:'trend-container',
+                        autoFit:true,
+                        padding:[0,0,25,35]
+                    });
+                    chart.line()
+                        .position('date*value')
+                        .color('value',['yellow','green']);
+                    // chart.point().position('date*value');
+                    chart.legend(false);    
+                    chart.tooltip({
+                        showCrosshairs: true, // 展示 Tooltip 辅助线
+                        shared: true,
+                    });
+                    // chart.coordinate().transpose();
+                    chart.scale({
+                        value:{
+                            alias:'当日确诊数量'
+                        }
+                    });
+                    chart.data(this.data);
+                    chart.interaction('element-active');
+                    chart.render();
+                    });  
+            },
+    },
+};
 </script>
 
 <style scoped>

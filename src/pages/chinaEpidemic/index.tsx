@@ -27,7 +27,7 @@ export default class ChinaEpidemic extends Vue {
                         <div class="col col-l">
                             <div class="xpanel-wrapper xpanel-wrapper-40">
                                 <div class="xpanel xpanel-l-t">
-                                    <div class="title">重点城市</div>
+                                    <div class="title">本周疫情严重城市</div>
                                     <div class="display">
                                         <City></City>
                                     </div>
@@ -35,7 +35,7 @@ export default class ChinaEpidemic extends Vue {
                             </div>
                             <div class="xpanel-wrapper xpanel-wrapper-60">
                                 <div class="xpanel xpanel-l-b">
-                                    <div class="title">新增病例无症状占比</div>
+                                    <div class="title">本周新增病例无症状占比</div>
                                     <div class="display">
                                         <Asym></Asym>
                                     </div>
@@ -60,7 +60,7 @@ export default class ChinaEpidemic extends Vue {
                         <div class="col col-r">
                             <div class="xpanel-wrapper xpanel-wrapper-100">
                                 <div class="xpanel xpanel-r-t">
-                                <div class="title">近一周新增</div>
+                                <div class="title">近3天新增确诊病例</div>
                                     <div class="display">
                                         <Table></Table>
                                     </div>
