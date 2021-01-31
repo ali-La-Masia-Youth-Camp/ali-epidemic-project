@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-29 18:13:19
- * @LastEditTime: 2021-01-31 17:37:30
+ * @LastEditTime: 2021-01-31 17:45:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ali-epidemic-project\src\pages\soccerEpidemic\index.tsx
@@ -39,6 +39,9 @@ export default class SoccerEpidemic extends Vue {
             el5.src = 'uefa.png';
             el5.width = 120;
             el5.height = 120;
+            el5.onclick=function(){
+                window.open("https://soccer.hupu.com/uefa/");
+            }
             const marker5 = new Marker({ element: el5 }).setLnglat({ lng: -7.5852328, lat: 36.864434 });
             scene.addMarker(marker5);
 
@@ -52,8 +55,25 @@ export default class SoccerEpidemic extends Vue {
                     el.width = 60;
                     el.height = 65;
                 }
+                let href = '';
+                switch(item.league_Name){
+                    case 'xj':
+                        href = 'spain';
+                        break;
+                    case 'yj':
+                        href = 'italy';
+                        break;
+                    case 'dj':
+                        href = 'germany';
+                        break;
+                    case 'yc':
+                        href = 'england';
+                        break;
+                    default:
+                        href = 'uefa'  
+                }
                 el.onclick=function(){
-                    window.open("https://www.goal.com/zh-cn/%E7%B1%BB%E5%88%AB/%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E/1/1pgecmpab62ei1akyb084izq3o")
+                    window.open("https://soccer.hupu.com/"+href);
                 }
                 let marker = new Marker({ element: el }).setLnglat({ lng: item.league_lng, lat: item.league_lat });
                 scene.addMarker(marker);
