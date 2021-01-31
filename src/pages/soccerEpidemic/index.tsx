@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-29 18:13:19
- * @LastEditTime: 2021-01-31 17:45:28
+ * @LastEditTime: 2021-01-31 22:19:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ali-epidemic-project\src\pages\soccerEpidemic\index.tsx
@@ -106,35 +106,6 @@ export default class SoccerEpidemic extends Vue {
                 scene.addPopup(popup);
             });
             scene.addLayer(pointLayer);
-
-
-            const pointLayer1 = new PointLayer({}).source(this.leagueListData, {
-                parser: {
-                    type: 'json',
-                    x: 'league_lng',
-                    y: 'league_lat'
-                }
-            }).shape('hexagonColumn')
-                .size('confirm_add', function (level) {
-                    return [6, 6, level * 5 + 20];
-                })
-                .active(true)
-                .color('#E83132')
-                .style({
-                    strokeWidth: 50,
-                    offsets: [500, 500]
-                });
-
-            pointLayer1.on('mousemove', e => {
-                const popup = new Popup({
-                    offsets: [0, 0],
-                    closeButton: false
-                })
-                    .setLnglat({ lng: e.feature.league_lng, lat: e.feature.league_lat })
-                    .setHTML(`<span>新增确诊: ${e.feature.confirm_add}</span>`);
-                scene.addPopup(popup);
-            });
-            scene.addLayer(pointLayer1);
             scene.render();
         });
 
