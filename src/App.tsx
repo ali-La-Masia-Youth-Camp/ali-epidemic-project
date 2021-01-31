@@ -22,21 +22,38 @@ export default class App extends Vue {
         carousel: ElCarousel,
     };
 
+    public activeIndex: number = 0;
+
     public carouselOptions = {
         height: '100vh',
         direction: 'vertical',
         autoplay: false,
-        initialIndex: 2,
+        initialIndex: 0,
     };
 
+    public handleCarouselChange(currentIndex: number, lastIndex: number) {
+        this.activeIndex = currentIndex;
+    }
+
+    public handleEnter() {
+        this.$refs.carousel.setActiveItem(1);
+    }
+
     public renderPages(h: CreateElement) {
+        console.log('renderPages');
         const pages = Object.keys(this.$options.components as object);
         pages.splice(pages.findIndex((page: string) => page === 'App'), 1);
         return pages.map((page: string, index) => {
             return (
                 <el-carousel-item key={page}>
                     {
-                        h(this.$options.components![page])
+                        this.activeIndex === index
+                        ? h(this.$options.components![page], {
+                            on: {
+                                handleEnter: this.handleEnter,
+                            },
+                        })
+                        : null
                     }
                 </el-carousel-item>
             );
@@ -47,6 +64,7 @@ export default class App extends Vue {
         return (
             <div id='app'>
                 <el-carousel
+                    onChange={this.handleCarouselChange}
                     {...{props: {...this.carouselOptions}}}
                     ref='carousel'
                 >

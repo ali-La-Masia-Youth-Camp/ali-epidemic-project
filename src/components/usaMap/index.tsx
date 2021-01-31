@@ -312,6 +312,9 @@ export default class USAMap extends Vue {
             <div
                 id='usa-map__container'
                 ref='usaMap'
+                style={{
+                    width: '100%',
+                }}
             ></div>
         );
     }

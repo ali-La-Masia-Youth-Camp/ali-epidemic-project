@@ -1,13 +1,15 @@
 .first-page{
     height: 100%;
     position: relative;
+    background: url('../chinaEpidemic/img/background.jpg');
+    background-size: cover;
     .video-container{
         position: absolute;
         top: 0;
         bottom: 0;
         left: 0;
         right: 0;
-        width: 50%;
+        width: 55%;
         margin: auto;
         video{
             position: absolute;
@@ -16,5 +18,59 @@
             width: 100%;
             border-radius: 1px;
         }
+    }
+    .nav-next{
+        position: absolute;
+        bottom: 56px;
+        left: 50%;
+        transform: translateX(-50%);
+        .nav-box{
+            .nav-background{
+                cursor: pointer;
+                width: 55px;
+                height: 55px;
+                background-color: transparent;
+                cursor: pointer;
+                span {
+                    position: absolute;
+                    top: 50%;
+                    right: 50%;
+                    transform: translate(50%, -50%);
+                    width: 0;
+                    height: 0;
+                    border-radius: 50%;
+                    background-color: transparent;
+                    border: 3px solid #eeeeee;
+                    animation: navBackground infinite;
+                    animation-fill-mode: forwards;
+                    animation-duration: 1.6s;
+                    &:nth-of-type(2){
+                        animation-delay: .4s;
+                    }
+                    &:nth-of-type(3) {
+                        animation-delay: .8s;
+                    }
+                    &:nth-of-type(4) {
+                        animation-delay: 1.2s;
+                    }
+                    &:nth-of-type(5) {
+                        animation-delay: 1.6s;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes navBackground {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+    100% {
+        width: 55px;
+        height: 55px;
+        opacity: 0;
     }
 }

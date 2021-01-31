@@ -6,4 +6,4 @@
  * @Description: In User Settings Edit
  * @FilePath: \ali-epidemic-project\src\l7-maps.d.ts
  */
-declare module '@antv/l7-maps'
+declare module '@antv/l7-maps';

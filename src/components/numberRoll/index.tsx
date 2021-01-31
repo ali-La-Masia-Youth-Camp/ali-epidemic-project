@@ -57,9 +57,11 @@ export default class NumberRoll extends Vue {
 
     public mounted() {
         const { rollContainer } = this.$refs;
-        Array.from(rollContainer.children).forEach((box, index) => {
-            this.numberRollAnimate(box, index, index * 500);
-        });
+        if (rollContainer) {
+            Array.from(rollContainer.children).forEach((box, index) => {
+                this.numberRollAnimate(box, index, index * 500);
+            });
+        }
     }
 
     public render() {
