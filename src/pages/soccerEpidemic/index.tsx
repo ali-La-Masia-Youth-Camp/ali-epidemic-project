@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-29 18:13:19
- * @LastEditTime: 2021-01-31 22:49:38
+ * @LastEditTime: 2021-02-01 00:15:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ali-epidemic-project\src\pages\soccerEpidemic\index.tsx
@@ -11,11 +11,13 @@ import { Scene, Marker, PointLayer, Popup } from '@antv/l7';
 import { GaodeMap } from '@antv/l7-maps';
 import leagueList from './mock/leagueList.json';
 import Table from './component/table.vue';
+import Trend from './component/trend.vue';
 import './style.scss';
 
 @Component({
     components: {
         Table,
+        Trend
     }
 })
 export default class SoccerEpidemic extends Vue {
@@ -123,6 +125,9 @@ export default class SoccerEpidemic extends Vue {
                 <div id="soccer-container" ></div>
                 <div class="display-table">
                     <Table></Table>
+                </div>
+                <div class="display-trend">
+                    <Trend></Trend>
                 </div>
             </div>
         );
