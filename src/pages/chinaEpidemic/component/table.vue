@@ -117,7 +117,7 @@ export default {
     },
     methods: {
         index(i){
-            return i;
+            return i+1;
         },
     },
     beforeMount() {

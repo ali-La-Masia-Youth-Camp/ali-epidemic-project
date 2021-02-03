@@ -9,10 +9,10 @@ export default {
     name: 'asym',
     data() {
         return {
-            city: [
-                { status: '无', value: 34 },
-                { status: '有', value: 85 },
-            ],
+            // city: [
+            //     { status: '无', value: 34 },
+            //     { status: '有', value: 85 },
+            // ],
         };
     },
 
@@ -55,7 +55,7 @@ export default {
         });
 
             const data = [
-              { type: '无症状', value: 0.42 },
+              { type: '无症状', value: 0.32 },
               { type: '有症状', value: 0.68 },
             ];
             const chart = new Chart({
