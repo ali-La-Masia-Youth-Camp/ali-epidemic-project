@@ -55,6 +55,8 @@ export default {
             this.y = e.y;
         });
 
+        this.renderMap();
+
         const ajax = new AJAX();
         const provinceURL = 'http://localhost:7001/china/province';
         ajax.get(provinceURL)
@@ -64,63 +66,20 @@ export default {
                     this.$has = pData.data.filter((item) => item.value !== 0);                  
                     this.render();
                 } else {
-                    // console.error('map');
                     Message.error(pData.error);
                 }
             })
             .catch((e) => {
-                // console.error('map');
                 Message.error(e);
             }); 
     },
     methods: {
         render(){
-            setTimeout(() => {
-                const chart = new Chart({
-                    container: 'china-map-container',
-                    autoFit: true,
-                    padding: [40, 20],
-                });
-                showHint(chart,this);
-
-                chart.tooltip({
-                    showTitle: false,
-                    showMarkers: false,
-                    shared: true,
-                });
-                // 同步度量
-                chart.scale({
-                    longitude: {
-                        sync: true,
-                    },
-                    latitude: {
-                        sync: true,
-                    },
-                });
-                chart.axis(false);
-                chart.legend('trend', {
-                    position: 'left',
-                });
-                // 绘制世界地图背景
-                const ds = new DataSet();
-                const worldMap = ds.createView('back')
-                    .source(ChinaMap, {
-                        type: 'GeoJSON',
-                    });
-                const worldMapView = chart.createView();
-                worldMapView.data(worldMap.rows);
-                worldMapView.tooltip(false);
-                worldMapView.polygon()
-                            .position('longitude*latitude')
-                            .style({
-                                fill: '#fff',
-                                stroke: '#ccc',
-                                lineWidth: 1,
-                            });
+            // setTimeout(() => {
                 // 可视化用户数据
-                this.userData(this.$has, ['#FF0000', '#220000'], ds, chart, worldMap);
-                chart.render();
-            });
+                this.userData(this.$has, ['#FF0000', '#220000'], this.$ds, this.$chart, this.$worldMap);
+                showHint(this.$chart,this);
+            // });
         },
 
         userData(data,color,ds,chart,worldMap){
@@ -161,6 +120,53 @@ export default {
                         },
                     });
                 userView.interaction('element-active');
+                chart.render();
+        },
+
+        renderMap(){
+                const chart = new Chart({
+                    container: 'china-map-container',
+                    autoFit: true,
+                    padding: [40, 20],
+                });
+                chart.tooltip({
+                    showTitle: false,
+                    showMarkers: false,
+                    shared: true,
+                });
+                // 同步度量
+                chart.scale({
+                    longitude: {
+                        sync: true,
+                    },
+                    latitude: {
+                        sync: true,
+                    },
+                });
+                chart.axis(false);
+                chart.legend('trend', {
+                    position: 'left',
+                });
+                // 绘制世界地图背景
+                const ds = new DataSet();
+                const worldMap = ds.createView('back')
+                    .source(ChinaMap, {
+                        type: 'GeoJSON',
+                    });
+                const worldMapView = chart.createView();
+                worldMapView.data(worldMap.rows);
+                worldMapView.tooltip(false);
+                worldMapView.polygon()
+                            .position('longitude*latitude')
+                            .style({
+                                fill: '#fff',
+                                stroke: '#ccc',
+                                lineWidth: 1,
+                            });
+                this.$ds=ds;
+                this.$chart=chart; 
+                this.$worldMap = worldMap;
+                chart.render();
         }
     },
 };

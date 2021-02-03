@@ -25,11 +25,12 @@ export default {
             ],
         };
     },
-    mounted() {
+    beforeMount() {
             const ajax = new AJAX();
             const cityURL = 'http://localhost:7001/china/city';
-            ajax.get(cityURL)
-                .then((req) => {
+            const p1 = ajax.get(cityURL)
+            this.$nextTick(()=>{
+                p1.then((req) => {
                     const cityData = req.data;
                     if (cityData.isOk) {
                         this.city = cityData.data.sort((a, b) => b.confirm - a.confirm);
@@ -43,6 +44,7 @@ export default {
                     // console.error(e,'city');
                     Message.error(e);
                 });
+            })
     },
     methods: {
          render() {
