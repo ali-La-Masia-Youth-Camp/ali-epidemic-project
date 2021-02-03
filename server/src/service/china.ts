@@ -1,5 +1,6 @@
 import { App,Provide,Inject } from '@midwayjs/decorator';
 import { Application,Context } from 'egg';
+import {Request} from "../util/request";
 
 
 @Provide()
@@ -10,6 +11,8 @@ export class ChinaService {
 
   @Inject()
   ctx: Context;
+  @Inject()
+  request:Request;
 
   // static provinceNames=['黑龙江']
 
@@ -66,21 +69,17 @@ export class ChinaService {
   }
 
 
-  //查询最近一个月每天的确证数量
+
+
+
   async getDayCount(){
-    let result={
-      isOk:false,
-      data:[],
-      error:''
-    }
-    try{
-      const data=await this.app.curl('https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=chinaDayList',{
-        method: 'GET',
-        dataType: 'json',
-      });
-      if(data!=null){
+      let result=await this.request.getData('https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=chinaDayList')
+      let data=result.data;
+      if(result.isOk){
+        //获取数据成功了
         let count=0;
-        data.data.data.chinaDayList.reverse().some(item=>{
+        result.data=[];
+        data.chinaDayList.reverse().some(item=>{
           result.data.push({
             date:item.date+' '+item.y,
             value:item.nowConfirm
@@ -90,35 +89,18 @@ export class ChinaService {
             return true;
           }
         })
-        result.isOk=true;
-      }else{
-        result.error='获取疫情数据失败'
       }
       return result;
-    }catch(error){
-      result.error='获取疫情数据失败';
-      return result;
-    }
-
   }
 
-  //获取近期确诊数目最多的十个城市
+
   async getCityData(){
-    let result={
-      isOk:false,
-      data:[],
-      error:''
-    }
-    try{
-      const data=await this.app.curl('https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=statisGradeCityDetail',{
-        method: 'GET',
-        dataType: 'json',
-      });
-      if(data!=null){
+      const result=await this.request.getData('https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=statisGradeCityDetail');
+      let data=result.data;
+      if(result.isOk){
         //对数据按照确诊数据排序
-        let sumData=data.data.data.statisGradeCityDetail;
+        let sumData=data.statisGradeCityDetail;
         if(sumData.length<=10){
-          result.isOk=true;
           result.data=sumData;
         }else{
           for(let i=10;i<sumData.length;i++){
@@ -134,18 +116,9 @@ export class ChinaService {
               sumData[d]=sumData[i];
             }
           }
-          result.isOk=true;
           result.data=sumData.splice(10)
         }
-      }else{
-        result.error='获取疫情数据失败'
       }
       return result;
-    }catch(error){
-      result.error='获取疫情数据失败'
-      return result;
-    }
-
   }
-
 }
