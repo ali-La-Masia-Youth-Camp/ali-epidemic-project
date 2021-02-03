@@ -91,7 +91,7 @@ export class ChinaService {
 
 
   async getCityData(){
-      const result=await this.request.getData('https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=statisGradeCityDetail');
+      let result=await this.request.getData('https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=statisGradeCityDetail');
       let data=result.data;
       if(result.isOk){
         //对数据按照确诊数据排序
@@ -118,5 +118,23 @@ export class ChinaService {
         }
       }
       return result;
+  }
+
+  async getCityByProvince(province:String){
+    const result=await this.request.getData('https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=statisGradeCityDetail');
+    let data=result.data;
+    if(result.isOk){
+      result.data=[];
+      let allConfirm=data.statisGradeCityDetail;
+      allConfirm.forEach(item=>{
+        if(item.province===province){
+          result.data.push({
+            city:item.city,
+            value:item.confirm
+          })
+        }
+      })
+    }
+    return result;
   }
 }
