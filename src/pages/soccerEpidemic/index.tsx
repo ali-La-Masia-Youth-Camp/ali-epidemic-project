@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-29 18:13:19
- * @LastEditTime: 2021-02-03 20:33:11
+ * @LastEditTime: 2021-02-03 21:00:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ali-epidemic-project\src\pages\soccerEpidemic\index.tsx
@@ -155,12 +155,10 @@ export default class SoccerEpidemic extends Vue {
                 .style({
                     opacity: 1.0,
                     strokeWidth: 50,
-                    offsets: [100, 100]
                 });
 
             pointLayer1.on('mousemove', (e) => {
                 const popup = new Popup({
-                    offsets: [10, 10],
                     closeButton: false,
                 })
                     .setLnglat({ lng: e.feature.league_lng, lat: e.feature.league_lat })
@@ -185,12 +183,10 @@ export default class SoccerEpidemic extends Vue {
                 .style({
                     opacity: 1.0,
                     strokeWidth: 50,
-                    offsets: [100, 300]
                 });
 
             pointLayer2.on('mousemove', (e) => {
                 const popup = new Popup({
-                    offsets: [10, 10],
                     closeButton: false,
                 })
                     .setLnglat({ lng: e.feature.league_lng, lat: e.feature.league_lat })
