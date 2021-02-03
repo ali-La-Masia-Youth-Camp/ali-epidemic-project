@@ -1,24 +1,23 @@
 /*
  * @Author: your name
  * @Date: 2021-01-29 18:13:19
- * @LastEditTime: 2021-02-03 19:10:04
+ * @LastEditTime: 2021-02-03 20:33:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ali-epidemic-project\src\pages\soccerEpidemic\index.tsx
  */
 import { Component, Vue } from 'vue-property-decorator';
-import { Scene, Marker, PointLayer, Popup, Scale, Zoom, Layers } from '@antv/l7';
+import { Scene, Marker, PointLayer, Popup, Scale, Zoom } from '@antv/l7';
+import ChartBoard from '@/components/chartBoard';
 import { GaodeMap } from '@antv/l7-maps';
-import leagueList from './mock/leagueList.json';
+import leagueList from '@/mock/leagueList.json';
 import Table from './component/table.vue';
-import Trend from './component/trend.vue';
 import './style.scss';
-import { Button } from 'element-ui';
 
 @Component({
     components: {
         Table,
-        Trend
+        ChartBoard
     }
 })
 export default class SoccerEpidemic extends Vue {
@@ -81,27 +80,27 @@ export default class SoccerEpidemic extends Vue {
                     el.width = 70;
                     el.height = 85;
                 }
-                let href='',title = '';
+                let href = '', title = '';
                 switch (item.league_Name) {
                     case 'xj':
                         href = 'spain';
-                        title='西甲'
+                        title = '西甲'
                         break;
                     case 'yj':
                         href = 'italy';
-                        title='意甲'
+                        title = '意甲'
                         break;
                     case 'dj':
                         href = 'germany';
-                        title='德甲'
+                        title = '德甲'
                         break;
                     case 'yc':
                         href = 'england';
-                        title='英超'
+                        title = '英超'
                         break;
                     default:
                         href = 'uefa';
-                        title='法甲'
+                        title = '法甲'
                 }
                 el.title = title;
                 el.onclick = function () {
@@ -120,7 +119,7 @@ export default class SoccerEpidemic extends Vue {
                 },
             }).shape('cylinder')
                 .size('confirm_all', function (level) {
-                    return [6, 6, level * 2 + 20];
+                    return [8,8, level * 2 + 20];
                 })
                 .active(true)
                 .color('blue')
@@ -149,7 +148,7 @@ export default class SoccerEpidemic extends Vue {
                 },
             }).shape('hexagonColumn')
                 .size('confirm_add', function (level) {
-                    return [6, 6, level * 10];
+                    return [10, 10, level * 2 + 20];
                 })
                 .active(true)
                 .color('red')
@@ -165,7 +164,7 @@ export default class SoccerEpidemic extends Vue {
                     closeButton: false,
                 })
                     .setLnglat({ lng: e.feature.league_lng, lat: e.feature.league_lat })
-                    .setHTML(`<span>今日确诊: ${e.feature.confirm_add}</span>`);
+                    .setHTML(`<span>新增确诊: ${e.feature.confirm_add}</span>`);
                 scene.addPopup(popup);
             });
             scene.addLayer(pointLayer1);
@@ -179,7 +178,7 @@ export default class SoccerEpidemic extends Vue {
                 },
             }).shape('squareColumn')
                 .size('confirm_heal', function (level) {
-                    return [6, 6, level * 10];
+                    return [8,8, level * 2 + 20];
                 })
                 .active(true)
                 .color('green')
@@ -195,7 +194,7 @@ export default class SoccerEpidemic extends Vue {
                     closeButton: false,
                 })
                     .setLnglat({ lng: e.feature.league_lng, lat: e.feature.league_lat })
-                    .setHTML(`<span>今日治愈: ${e.feature.confirm_heal}</span>`);
+                    .setHTML(`<span>新增治愈: ${e.feature.confirm_heal}</span>`);
                 scene.addPopup(popup);
             });
             scene.addLayer(pointLayer2);
@@ -223,7 +222,10 @@ export default class SoccerEpidemic extends Vue {
                 <div id="soccer-container" ></div>
                 <div class="display-table">
                     <Table></Table>
-                    <Trend></Trend>
+                    <chart-board name='soccerTrend' styleConfig={{
+                        width: 480,
+                        height: 400,
+                    }} />
                 </div>
             </div>
         );

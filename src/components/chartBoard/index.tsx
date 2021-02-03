@@ -5,6 +5,7 @@ import TopFiveState from '@/components/charts/topFiveState';
 import TopFiveDeath from '@/components/charts/topFiveDeath';
 import TotalTrend from '@/components/charts/totalTrend';
 import AddTrend from '@/components/charts/addTrend';
+import SoccerTrend from '@/components/charts/soccerTrend';
 import RealTimeStatistic from '@/components/charts/realTimeStatistic';
 import StateCases from '@/components/charts/stateCase';
 import './style.scss';
@@ -16,6 +17,7 @@ import './style.scss';
         AddTrend,
         RealTimeStatistic,
         StateCases,
+        SoccerTrend
     },
 })
 export default class ChartBoard extends Vue {
@@ -33,17 +35,19 @@ export default class ChartBoard extends Vue {
     public renderCharts() {
         switch (this.name) {
             case 'topFive':
-                return <TopFiveState/>;
+                return <TopFiveState />;
             case 'topFiveDeath':
-                return <TopFiveDeath/>;
+                return <TopFiveDeath />;
             case 'totalTrend':
-                return <TotalTrend/>;
+                return <TotalTrend />;
             case 'statistic':
-                return <RealTimeStatistic/>;
+                return <RealTimeStatistic />;
             case 'addTrend':
-                return <AddTrend/>;
+                return <AddTrend />;
             case 'stateCase':
-                return <StateCases/>;
+                return <StateCases />;
+            case 'soccerTrend':
+                return <SoccerTrend />;
         }
     }
 
@@ -54,7 +58,7 @@ export default class ChartBoard extends Vue {
                 style={{
                     width: `${this.styleConfig.width}px`,
                     height: `${this.styleConfig.height}px`,
-                 }}
+                }}
             >
                 <div class='resize-container'>
                     <div class='border-sourround'>
