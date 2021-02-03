@@ -13,19 +13,20 @@ import './style.scss';
 export default class USAMap extends Vue {
     public mapData!: any; // 原始地图数据
 
+    public chart!: View;
+
+    public view!: View;
+
     public mapDataView!: any;
 
     public backgroundView!: View;
 
+    // 州 view
     public stateBgView!: View;
 
     public stateUserView!: View;
 
     public epidemicData!: IUSAStateEpidemic[];
-
-    public chart!: View;
-
-    public view!: View;
 
     public isShowState: boolean = false;
 
@@ -34,7 +35,6 @@ export default class USAMap extends Vue {
     public clickTimes: number = 1;
 
     public $refs!: {
-        usaMap: HTMLDivElement,
         refreshIcon: HTMLElement
     };
 
@@ -46,8 +46,8 @@ export default class USAMap extends Vue {
      * @param longStep 经度变化步数
      */
     public scaleState(name: string, latStep: number, longStep: number) {
-        const state = this.mapDataView.rows.find((row: any) => row.name === name);
         const stateIndex = this.mapDataView.rows.findIndex((row: any) => row.name === name);
+        const state = this.mapDataView.rows[stateIndex];
         const { longitude, latitude } = state;
         const scaleLatitude = latitude.map((coord: number) => {
             return coord + latStep;
@@ -181,10 +181,15 @@ export default class USAMap extends Vue {
             };
             this.isShowState = true;
             const stateCoords = this.getStateCoordinates(stateData.nameMap);
-            const stateMapView = this.dataset.createView(stateData.nameMap)
-                .source(stateCoords, {
-                    type: 'GeoJSON',
-                });
+            let stateMapView;
+            stateMapView = this.dataset.getView(stateData.nameMap);
+            // 如果对应州的 view 不存在则创建新的
+            if(!stateMapView) {
+                stateMapView = this.dataset.createView(stateData.nameMap)
+                    .source(stateCoords, {
+                        type: 'GeoJSON',
+                    });
+            }
             this.stateBgView = this.chart.createView(region);
             this.stateUserView = this.chart.createView(region);
             this.draw(stateMapView, [stateData], this.stateBgView, this.stateUserView);
@@ -348,7 +353,6 @@ export default class USAMap extends Vue {
         return (
             <div
                 id='usa-map__container'
-                ref='usaMap'
                 style={{
                     width: '100%',
                 }}

@@ -30,7 +30,6 @@ export default class NumberRoll extends Vue {
     }
 
     public numberRollAnimate(box: any, index: number, delay: number) {
-        // TODO: 这玩意写得太垃圾了，等等再优化吧。。
         let currentIndex = 0;
         const div: any = box.children[0];
         if (box.getAttribute('class').indexOf('comma-box') === -1) {
