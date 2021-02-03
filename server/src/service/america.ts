@@ -17,6 +17,7 @@ export class AmericaService {
       data:{},
       error:''
     };
+    try{
       const data=await this.app.curl('https://api.inews.qq.com/newsqa/v1/automation/foreign/daily/list?country=%E7%BE%8E%E5%9B%BD&',
         {
           method: 'GET',
@@ -36,7 +37,11 @@ export class AmericaService {
           result.error='当日数据获取失败'
         }
       }
-    return result;
+      return result;
+    }catch(error){
+      result.error='数据获取失败';
+      return result;
+    }
   }
 
   async getDataByState(state:string){
@@ -45,38 +50,42 @@ export class AmericaService {
       data:{},
       error:''
     };
-    const data=await this.app.curl('https://api.inews.qq.com/newsqa/v1/automation/modules/list?modules=FAutoforeignList',
-      {
-        method: 'GET',
-        dataType: 'json',
-      })
-    if(data!=null){
-      let americaData=data.data.data.FAutoforeignList[0]
-      if(state==null||state==undefined||state.trim()==''){
-        //返回全美国的数据
-        result.isOk=true;
-        result.data={
-          confirm:americaData.confirm,
-          heal:americaData.heal,
-          dead:americaData.dead
-        }
-      }else{
-        let flag=false;
-        americaData.children.some(item=>{
-          if(item.name===state){
-            result.data=item;
-            result.isOk=true;
-            flag=true;
-            return true;
-          }
+    try{
+      const data=await this.app.curl('https://api.inews.qq.com/newsqa/v1/automation/modules/list?modules=FAutoforeignList',
+        {
+          method: 'GET',
+          dataType: 'json',
         })
-        if(flag==false){
-          result.error='获取'+state+'州疫情数据失败'
+      if(data!=null){
+        let americaData=data.data.data.FAutoforeignList[0]
+        if(state==null||state==undefined||state.trim()==''){
+          //返回全美国的数据
+          result.isOk=true;
+          result.data={
+            confirm:americaData.confirm,
+            heal:americaData.heal,
+            dead:americaData.dead
+          }
+        }else{
+          let flag=false;
+          americaData.children.some(item=>{
+            if(item.name===state){
+              result.data=item;
+              result.isOk=true;
+              flag=true;
+              return true;
+            }
+          })
+          if(flag==false){
+            result.error='获取'+state+'州疫情数据失败'
+          }
         }
+
       }
-
+      return result;
+    }catch (error){
+      result.error='数据获取失败';
+      return result;
     }
-    return result;
   }
-
 }
