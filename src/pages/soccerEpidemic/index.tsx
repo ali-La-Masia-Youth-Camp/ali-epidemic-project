@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-29 18:13:19
- * @LastEditTime: 2021-02-03 18:52:28
+ * @LastEditTime: 2021-02-03 19:10:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ali-epidemic-project\src\pages\soccerEpidemic\index.tsx
@@ -25,7 +25,7 @@ export default class SoccerEpidemic extends Vue {
 
     public leagueListData!: any;
     public leagueListData_ca!: any;
-    public leagueListData_ch!:any;
+    public leagueListData_ch!: any;
 
 
     public mounted() {
@@ -50,12 +50,12 @@ export default class SoccerEpidemic extends Vue {
             //每日新增柱状图的经纬度信息
             this.leagueListData_ca = this.leagueListData.map((item: any) => ({
                 ...item,
-                league_lng: parseFloat(item.league_lng)+0.5+''
+                league_lng: parseFloat(item.league_lng) + 0.5 + ''
             }));
-             //每日新增柱状图的经纬度信息
-             this.leagueListData_ch = this.leagueListData_ca.map((item: any) => ({
+            //每日新增柱状图的经纬度信息
+            this.leagueListData_ch = this.leagueListData_ca.map((item: any) => ({
                 ...item,
-                league_lng: parseFloat(item.league_lng)+0.5+''
+                league_lng: parseFloat(item.league_lng) + 0.5 + ''
             }));
 
             // 添加欧足联标志
@@ -64,6 +64,7 @@ export default class SoccerEpidemic extends Vue {
             el5.src = 'uefa.png';
             el5.width = 120;
             el5.height = 120;
+            el5.title = '欧足联'
             el5.onclick = function () {
                 window.open('https://soccer.hupu.com/uefa/');
             };
@@ -80,32 +81,38 @@ export default class SoccerEpidemic extends Vue {
                     el.width = 70;
                     el.height = 85;
                 }
-                let href = '';
+                let href='',title = '';
                 switch (item.league_Name) {
                     case 'xj':
                         href = 'spain';
+                        title='西甲'
                         break;
                     case 'yj':
                         href = 'italy';
+                        title='意甲'
                         break;
                     case 'dj':
                         href = 'germany';
+                        title='德甲'
                         break;
                     case 'yc':
                         href = 'england';
+                        title='英超'
                         break;
                     default:
                         href = 'uefa';
+                        title='法甲'
                 }
+                el.title = title;
                 el.onclick = function () {
                     window.open('https://soccer.hupu.com/' + href);
                 };
-                const marker = new Marker({ element: el }).setLnglat({ lng:parseFloat(item.league_lng)-2.0, lat: item.league_lat });
+                const marker = new Marker({ element: el }).setLnglat({ lng: parseFloat(item.league_lng) - 2.0, lat: item.league_lat });
                 scene.addMarker(marker);
             });
 
             // 添加累计确诊的3d柱状图层
-            const pointLayer = new PointLayer({zIndex:999}).source(this.leagueListData, {
+            const pointLayer = new PointLayer({ zIndex: 999 }).source(this.leagueListData, {
                 parser: {
                     type: 'json',
                     x: 'league_lng',
@@ -134,7 +141,7 @@ export default class SoccerEpidemic extends Vue {
             scene.addLayer(pointLayer);
 
             // 添加每日新增的3d柱状图层
-            const pointLayer1 = new PointLayer({zIndex:999}).source(this.leagueListData_ca, {
+            const pointLayer1 = new PointLayer({ zIndex: 999 }).source(this.leagueListData_ca, {
                 parser: {
                     type: 'json',
                     x: 'league_lng',
@@ -163,8 +170,8 @@ export default class SoccerEpidemic extends Vue {
             });
             scene.addLayer(pointLayer1);
 
-               // 添加每日治愈的3d柱状图层
-               const pointLayer2 = new PointLayer({zIndex:999}).source(this.leagueListData_ch, {
+            // 添加每日治愈的3d柱状图层
+            const pointLayer2 = new PointLayer({ zIndex: 999 }).source(this.leagueListData_ch, {
                 parser: {
                     type: 'json',
                     x: 'league_lng',
@@ -216,6 +223,7 @@ export default class SoccerEpidemic extends Vue {
                 <div id="soccer-container" ></div>
                 <div class="display-table">
                     <Table></Table>
+                    <Trend></Trend>
                 </div>
             </div>
         );
