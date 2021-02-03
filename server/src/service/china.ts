@@ -130,7 +130,7 @@ export class ChinaService {
         if(item.province===province){
           result.data.push({
             city:item.city,
-            value:item.confirm
+            value:item.nowConfirm
           })
         }
       })
