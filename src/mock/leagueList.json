@@ -4,40 +4,45 @@
 	"data": [{
 			"id": 1,
 			"league_Name": "fj",
-			"confirm_add": "2",
-			"confirm_all": "20",
+			"confirm_add": "35",
+			"confirm_all": "126",
+			"confirm_heal": "1",
             "league_lng": "2.201204",
             "league_lat": "48.513902"
 		}, {
 			"id": 2,
 			"league_Name": "yj",
-			"confirm_add": "8",
-            "confirm_all": "68",
+			"confirm_add": "28",
+			"confirm_all": "160",
+			"confirm_heal": "3",
             "league_lng": "12.501204",
             "league_lat": "41.813902"
 		},
 		{
 			"id": 3,
 			"league_Name": "xj",
-			"confirm_add": "6",
-            "confirm_all": "38",
+			"confirm_add": "12",
+			"confirm_all": "78",
+			"confirm_heal": "1",
             "league_lng": "-3.421204",
             "league_lat":"40.253902"
 		},
 		{
 			"id": 4,
 			"league_Name": "dj",
-			"confirm_add": "2",
-            "confirm_all": "28",
+			"confirm_add": "37",
+			"confirm_all": "130",
+			"confirm_heal": "3",
             "league_lng": "12.251204",
             "league_lat":"52.303902"
 		},
 		{
 			"id": 5,
 			"league_Name": "yc",
-			"confirm_add": "12",
-            "confirm_all": "88",
-            "league_lng": "0.151204",
+			"confirm_add": "15",
+			"confirm_all": "88",
+			"confirm_heal": "2",
+            "league_lng": "-1.151204",
             "league_lat":"51.303902"
 		}
 	]
