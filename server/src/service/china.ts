@@ -68,10 +68,6 @@ export class ChinaService {
     }
   }
 
-
-
-
-
   async getDayCount(){
       let result=await this.request.getData('https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=chinaDayList')
       let data=result.data;
@@ -82,7 +78,7 @@ export class ChinaService {
         data.chinaDayList.reverse().some(item=>{
           result.data.push({
             date:item.date+' '+item.y,
-            value:item.nowConfirm
+            value:item.localConfirm
           })
           count++;
           if(count==30){
@@ -104,19 +100,21 @@ export class ChinaService {
           result.data=sumData;
         }else{
           for(let i=10;i<sumData.length;i++){
-            let min=sumData[0];
+            let min=sumData[0].confirmAdd;
             let d=0;
             for(let j=1;j<10;j++){
-              if(sumData[j]<min){
-                min=sumData[j];
+              if(sumData[j].confirmAdd<min){
+                min=sumData[j].confirmAdd;
                 d=j;
               }
             }
-            if(sumData[i]>min){
+            if(sumData[i].confirmAdd>min){
               sumData[d]=sumData[i];
+              sumData[d].count=sumData[d].confirmAdd;
             }
           }
-          result.data=sumData.splice(10)
+          result.data=sumData.splice(0,10);
+          console.log(result.data);
         }
       }
       return result;
