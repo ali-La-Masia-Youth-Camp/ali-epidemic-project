@@ -13,7 +13,7 @@ import AJAX from '@/common/ajax';
 import ChinaMap from '@/mock/china-province.json';
 import {Message} from 'element-ui';
 import showHint from '../util/click';
-import Qingdao from '@/mock/qingdao.json';
+import city from '@/mock/china-city.json';
 
 export default {
     name: 'china-map',
@@ -195,12 +195,15 @@ export default {
 
     watch:{
         '$store.state.cityName'(newV){
-            console.log(newV);
+            // console.log(newV);
             if(newV!==''){
-                this.renderCity(Qingdao,this.$chart);
+                const cityData = {"type": "FeatureCollection",
+                            "cp":[118.7402,36.4307],
+                            "size":"1500",
+                            "features": city.features.filter(e=>e.properties.name.startsWith(newV))
+                        };
+                this.renderCity(cityData,this.$chart);
             }else{
-                // this.$chart.clearView(this.$cityView);
-                // console.log(this.$cityView);
                 this.$cityView.clear();
             }
         }

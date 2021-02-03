@@ -33,7 +33,7 @@ export default {
             .then((req) => {
                  const tData= req.data;
                 //后端bug,返回的是false
-                if(!tData.isOk){
+                if(tData.isOk){
                     // console.log(tData);
                     
                     this.data = tData.data.sort((a,b)=>a>=b);
