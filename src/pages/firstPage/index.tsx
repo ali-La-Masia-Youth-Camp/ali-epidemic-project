@@ -1,7 +1,8 @@
 import { Component, Vue, Emit } from 'vue-property-decorator';
 import './style.scss';
 
-@Component({})
+@Component({
+})
 export default class FirstPage extends Vue {
     @Emit('handleEnter')
     public handleEnter() {

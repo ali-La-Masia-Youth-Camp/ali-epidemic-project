@@ -6,6 +6,8 @@ import USAStateJson from '@/mock/foreign-list.json';
 import USAEpidemicJson from '@/mock/usa-epidemic.json';
 import { IUSAStateEpidemic, IUSAEpidemicData } from '@/interfaces';
 import { findMaxComfirmFromGeoData, findMinComfirmFromGeoData } from '@/utlis/array.utli';
+import SCALE from '@/common/size';
+import './style.scss';
 
 @Component({})
 export default class USAMap extends Vue {
@@ -13,18 +15,27 @@ export default class USAMap extends Vue {
 
     public mapDataView!: any;
 
+    public backgroundView!: View;
+
+    public stateBgView!: View;
+
+    public stateUserView!: View;
+
     public epidemicData!: IUSAStateEpidemic[];
 
     public chart!: View;
 
     public view!: View;
 
-    public backgroundView!: View;
+    public isShowState: boolean = false;
 
     public dataset!: any;
 
+    public clickTimes: number = 1;
+
     public $refs!: {
         usaMap: HTMLDivElement,
+        refreshIcon: HTMLElement
     };
 
     /**
@@ -34,9 +45,9 @@ export default class USAMap extends Vue {
      * @param latStep 纬度变化步数
      * @param longStep 经度变化步数
      */
-    public scaleState(source: any, name: string, latStep: number, longStep: number) {
-        const state = source.rows.find((row: any) => row.name === name);
-        const stateIndex = source.rows.findIndex((row: any) => row.name === name);
+    public scaleState(name: string, latStep: number, longStep: number) {
+        const state = this.mapDataView.rows.find((row: any) => row.name === name);
+        const stateIndex = this.mapDataView.rows.findIndex((row: any) => row.name === name);
         const { longitude, latitude } = state;
         const scaleLatitude = latitude.map((coord: number) => {
             return coord + latStep;
@@ -46,7 +57,7 @@ export default class USAMap extends Vue {
         });
         state.latitude = scaleLatitude;
         state.longitude = scaleLongitude;
-        source.rows.splice(stateIndex, 1, state);
+        this.mapDataView.rows.splice(stateIndex, 1, state);
     }
 
     /**
@@ -165,23 +176,24 @@ export default class USAMap extends Vue {
             const region = {
                 region: {
                     start: { x: 0.2, y: 0.1 },
-                    end: { x: 0.6, y: 0.9 },
+                    end: { x: 0.7, y: 0.9 },
                 },
             };
+            this.isShowState = true;
             const stateCoords = this.getStateCoordinates(stateData.nameMap);
             const stateMapView = this.dataset.createView(stateData.nameMap)
                 .source(stateCoords, {
                     type: 'GeoJSON',
                 });
-            const stateBgView = this.chart.createView(region);
-            const stateUserView = this.chart.createView(region);
-            this.draw(stateMapView, [stateData], stateBgView, stateUserView);
+            this.stateBgView = this.chart.createView(region);
+            this.stateUserView = this.chart.createView(region);
+            this.draw(stateMapView, [stateData], this.stateBgView, this.stateUserView);
             this.renderChart();
         });
     }
 
     public draw(
-        coordData: any,
+        coordViewData: any,
         epidemicData: IUSAStateEpidemic[],
         bgView = this.backgroundView,
         userView = this.view,
@@ -189,7 +201,7 @@ export default class USAMap extends Vue {
         const maxConfirmState = findMaxComfirmFromGeoData(this.epidemicData);
         const minConfirmState = findMinComfirmFromGeoData(this.epidemicData);
 
-        this.drawDataSetBackground(coordData, bgView);
+        this.drawDataSetBackground(coordViewData, bgView);
 
         this.drawDataSetUserView(epidemicData, {
             maxConfirm: maxConfirmState.confirm,
@@ -201,10 +213,6 @@ export default class USAMap extends Vue {
      * 美国地图背景
      */
     public drawDataSetBackground(sourceData: any, bgView: View) {
-        if (sourceData.rows.length > 1) {
-            this.scaleState(sourceData, 'Hawaii', 8, 51);
-            this.scaleState(sourceData, 'Puerto Rico', 10, -25);
-        }
         bgView.data(sourceData.rows);
         bgView.tooltip(false);
         bgView.polygon().position('longitude*latitude').style({
@@ -275,6 +283,28 @@ export default class USAMap extends Vue {
         view.interaction('state-click');
     }
 
+    /**
+     * 从州地图返回美国地图
+     */
+    public handleRefresh() {
+        const { refreshIcon } = this.$refs;
+        refreshIcon.style.transform = `rotate(${360 * this.clickTimes}deg)`;
+
+        this.clickTimes++;
+
+        // 1. 清空州地图 View
+        this.stateBgView.clear();
+        this.stateUserView.clear();
+
+        // 2. 绘制美国地图
+        this.draw(this.mapDataView, this.epidemicData);
+
+        this.renderChart();
+
+        // 3. 不渲染刷新 icon
+        this.isShowState = false;
+    }
+
     public renderChart() {
         this.chart.render();
     }
@@ -285,7 +315,7 @@ export default class USAMap extends Vue {
         this.chart = new Chart({
             container: 'usa-map__container',
             autoFit: true,
-            height: 430,
+            height: 430 * SCALE,
             width: window.innerWidth / 2.1,
             padding: [20, 18],
         });
@@ -301,12 +331,19 @@ export default class USAMap extends Vue {
                 type: 'GeoJSON',
             });
 
+        /** 改变两个州的坐标使其不至于离美国本土太远而导致的本土地图过小 */
+        if (this.mapDataView.rows.length > 1) {
+            this.scaleState('Hawaii', 8, 51);
+            this.scaleState('Puerto Rico', 10, -25);
+        }
+
         this.draw(this.mapDataView, this.epidemicData);
 
         this.handleChartActions();
 
         this.renderChart();
     }
+
     public render() {
         return (
             <div
@@ -315,7 +352,17 @@ export default class USAMap extends Vue {
                 style={{
                     width: '100%',
                 }}
-            ></div>
+            >
+                {
+                    this.isShowState ? 
+                    <i
+                        ref='refreshIcon'
+                        class='iconfont icon-refresh'
+                        onclick={this.handleRefresh}
+                    ></i>
+                    : null
+                }
+            </div>
         );
     }
 }

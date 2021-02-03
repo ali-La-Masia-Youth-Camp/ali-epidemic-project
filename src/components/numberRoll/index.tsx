@@ -1,5 +1,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import SCALE from '@/common/size';
 import './style.scss';
+
 
 const COMMA = ',';
 const NUMBER = '0123456789';
@@ -39,7 +41,7 @@ export default class NumberRoll extends Vue {
                         clearInterval(timer);
                     }
                     if (currentIndex !== 0) {
-                        div.style.transform = `translate(0, -${currentIndex * 72}px)`;
+                        div.style.transform = `translate(0, -${currentIndex * 72 * SCALE}px)`;
                     }
                     if (currentIndex > 10) {
                         div.style.transitionProperty = `none`;

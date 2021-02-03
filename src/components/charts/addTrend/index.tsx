@@ -1,6 +1,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { View, Chart } from '@antv/g2';
 import USAEpidemic from '@/mock/usa-epidemic.json';
+import SCALE from '@/common/size';
 
 @Component({})
 export default class AddTrend extends Vue {
@@ -21,8 +22,7 @@ export default class AddTrend extends Vue {
         this.chart = new Chart({
             container: 'add-trend__container',
             autoFit: true,
-            height: 150,
-            width: 360,
+            height: 150 * SCALE,
         });
 
         const data = this.getData();

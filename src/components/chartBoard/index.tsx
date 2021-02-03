@@ -8,6 +8,7 @@ import AddTrend from '@/components/charts/addTrend';
 import RealTimeStatistic from '@/components/charts/realTimeStatistic';
 import StateCases from '@/components/charts/stateCase';
 import './style.scss';
+import SCALE from '@/common/size';
 
 @Component({
     components: {
@@ -16,16 +17,19 @@ import './style.scss';
         AddTrend,
         RealTimeStatistic,
         StateCases,
+        TotalTrend
     },
 })
 export default class ChartBoard extends Vue {
     @Prop({
         default: () => ({
-            width: 300,
-            height: 280,
+            height: 280 * SCALE,
         }),
     })
     public styleConfig!: IChartBoatdPropType;
+
+    @Prop()
+    public stateName!: string;
 
     @Prop()
     public name!: string;
@@ -37,7 +41,7 @@ export default class ChartBoard extends Vue {
             case 'topFiveDeath':
                 return <TopFiveDeath/>;
             case 'totalTrend':
-                return <TotalTrend/>;
+                return <total-trend/>;
             case 'statistic':
                 return <RealTimeStatistic/>;
             case 'addTrend':
@@ -52,7 +56,6 @@ export default class ChartBoard extends Vue {
             <div
                 class='chart-board__container'
                 style={{
-                    width: `${this.styleConfig.width}px`,
                     height: `${this.styleConfig.height}px`,
                  }}
             >

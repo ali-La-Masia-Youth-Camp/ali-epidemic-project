@@ -3,10 +3,10 @@ import { CreateElement } from 'vue';
 import NumberRoll from '@/components/numberRoll';
 import ChartBoard from '@/components/chartBoard';
 import USAMap from '@/components/usaMap';
-import TopFiveState from '@/components/charts/topFiveState';
 import USAEpidemicJson from '@/mock/usa-epidemic.json';
 import { IUSAEpidemicData } from '@/interfaces';
 import './style.scss';
+import SCALE from '@/common/size';
 
 @Component({
     components: {
@@ -31,8 +31,8 @@ export default class UsaEpidemic extends Vue {
             <div class='fullpage-container__section usa-epidemic'>
                 <div class='left-container'>
                     <chart-board name='statistic'/>
-                    <chart-board name='addTrend' styleConfig={{ width: 380, height: 220 }}/>
-                    <chart-board name='stateCase' styleConfig={{ width: 350, height: 200 }}/>
+                    <chart-board name='addTrend' styleConfig={{ width: 380 * SCALE, height: 220 * SCALE }}/>
+                    <chart-board name='stateCase' styleConfig={{ width: 350 * SCALE, height: 200 * SCALE }}/>
                 </div>
                 <div class='middle-container'>
                     {
@@ -41,9 +41,10 @@ export default class UsaEpidemic extends Vue {
                     <USAMap/>
                     <chart-board
                         name='totalTrend'
+                        stateName='California'
                         styleConfig={{
-                            width: 600,
-                            height: 200,
+                            width: 600 * SCALE,
+                            height: 200 * SCALE,
                         }}
                     />
                 </div>

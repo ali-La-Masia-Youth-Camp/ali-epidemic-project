@@ -1,6 +1,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { View, Chart } from '@antv/g2';
 import StateFigure from '@/mock/foreign-list.json';
+import SCALE from '@/common/size';
 
 @Component({})
 export default class TopFiveState extends Vue {
@@ -21,8 +22,7 @@ export default class TopFiveState extends Vue {
         this.chart = new Chart({
             container: 'top-five-state__container',
             autoFit: true,
-            height: 200,
-            width: 300,
+            height: 200 * SCALE,
         });
 
         const data = this.getData();

@@ -16,7 +16,7 @@ import './style.scss';
 @Component({
     components: {
         Table,
-    }
+    },
 })
 export default class SoccerEpidemic extends Vue {
 
@@ -120,8 +120,8 @@ export default class SoccerEpidemic extends Vue {
 
         return (
             <div class='fullpage-container__section'>
-                <div id="soccer-container" ></div>
-                <div class="display-table">
+                <div id='soccer-container' ></div>
+                <div class='display-table'>
                     <Table></Table>
                 </div>
             </div>

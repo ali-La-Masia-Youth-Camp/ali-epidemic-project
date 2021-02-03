@@ -11,3 +11,9 @@ export const findMinComfirmFromGeoData = <T = IUSAStateEpidemic>(array: T[]): T 
         return prev.confirm < curv.confirm ? prev : curv;
     }, array[0]);
 };
+
+export const findMinDeathFromStateData = (array: any[]) => {
+    return array.reduce((prev: any, curv: any) => {
+        return prev.dead < curv.dead ? prev : curv;
+    }, array[0]);
+};

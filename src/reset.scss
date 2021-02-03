@@ -60,3 +60,15 @@ a {
 html {
 	font-size: 100%;
 }
+
+@media screen and (min-width: 1600px) {
+	html {
+		font-size: 150%;
+	}
+}
+
+@media screen and (min-width: 1500px) and (max-width: 1600px) {
+	html {
+		font-size: 115%;
+	}
+}

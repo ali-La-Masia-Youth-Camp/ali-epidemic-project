@@ -1531,6 +1531,11 @@
   resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-14.14.22.tgz?cache=0&sync_timestamp=1611167664149&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-14.14.22.tgz#0d29f382472c4ccf3bd96ff0ce47daf5b7b84b18"
   integrity sha1-DSnzgkcsTM872W/wzkfa9be4Sxg=
 
+"@types/node@^14.14.22":
+  version "14.14.22"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.22.tgz#0d29f382472c4ccf3bd96ff0ce47daf5b7b84b18"
+  integrity sha512-g+f/qj/cNcqKkc3tFqlXOYjrmZA+jNBiDzbP3kH+B+otKFqAdPgVTGP1IeKRdMml/aE69as5S4FqtxAbl+LaMw==
+
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
   resolved "https://registry.npm.taobao.org/@types/normalize-package-data/download/@types/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
@@ -7539,6 +7544,13 @@ postcss-ordered-values@^4.1.2:
     cssnano-util-get-arguments "^4.0.0"
     postcss "^7.0.0"
     postcss-value-parser "^3.0.0"
+
+postcss-pxtorem@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/postcss-pxtorem/-/postcss-pxtorem-5.1.1.tgz#198a68c10f9ad2d42370ef66299d7b3168f8cffa"
+  integrity sha512-uvgIujL/pn0GbZ+rczESD2orHsbXrrCqi+q9wJO8PCk3ZGCoVVtu5hZTbtk+tbZHZP5UkTfCvqOrTZs9Ncqfsg==
+  dependencies:
+    postcss "^7.0.27"
 
 postcss-reduce-initial@^4.0.3:
   version "4.0.3"
