@@ -69,16 +69,16 @@ export class ChinaService {
   }
 
   async getDayCount(){
-      let result=await this.request.getData('https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=chinaDayList')
+      let result=await this.request.getData('https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=chinaDayAddList')
       let data=result.data;
       if(result.isOk){
         //获取数据成功了
         let count=0;
         result.data=[];
-        data.chinaDayList.reverse().some(item=>{
+        data.chinaDayAddList.reverse().some(item=>{
           result.data.push({
             date:item.date+' '+item.y,
-            value:item.localConfirm
+            value:item.confirm
           })
           count++;
           if(count==30){
