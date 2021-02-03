@@ -4,7 +4,7 @@ import * as types from './mutationTypes';
 import AJAX from '@/common/ajax';
 
 export const actions: ActionTree<IStateInterface, IStateInterface> = {
-    setCityName({commit},name){
-        commit('setCityName',name);
-    }
+    setCityName({commit}, name) {
+        commit('setCityName', name);
+    },
 };

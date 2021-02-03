@@ -27,7 +27,7 @@ export default class ChinaEpidemic extends Vue {
                         <div class='col col-l'>
                             <div class='xpanel-wrapper xpanel-wrapper-40'>
                                 <div class='xpanel xpanel-l-t'>
-                                    <div class='title'>本周疫情严重城市</div>
+                                    <div class='title'>本月疫情严重城市</div>
                                     <div class='display'>
                                         <City></City>
                                     </div>

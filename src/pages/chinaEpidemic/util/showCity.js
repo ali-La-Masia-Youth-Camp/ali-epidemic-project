@@ -1,5 +1,5 @@
 export default function(chart){
-    console.log(this);
+    // console.log(this);
     chart.on('element:click', (context) => {
         // console.log(context);
         this.$store.dispatch('setCityName',context.data.data.city);

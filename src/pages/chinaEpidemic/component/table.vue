@@ -6,7 +6,7 @@
     :data="tableData"
     height="100%"
     border
-    style="width: 100%">
+  >
      <el-table-column
       type="index"
       :index="index">
@@ -23,11 +23,14 @@
     </el-table-column>
     <el-table-column
       prop="address"
-      label="地址">
+      label="地址"
+    >
     </el-table-column>
       <el-table-column
       prop="count"
-      label="数量">
+      label="数量"
+      width="40"
+      >
     </el-table-column>
   </el-table>
 </template>
@@ -55,14 +58,14 @@ export default {
         {
           date: '2021-02-03',
           name: '黑龙江',
-          address: '哈尔滨市香坊区文化录38号',
+          address: '哈尔滨市香坊区文化路38号',
           count: 8,
         },
         {
           date: '2021-02-03',
           name: '山东',
           address: '威海市环翠区文化西路180号',
-          count: 5,
+          count: 1,
         },
         {
           date: '2021-02-03',

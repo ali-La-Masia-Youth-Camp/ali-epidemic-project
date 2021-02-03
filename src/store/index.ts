@@ -8,7 +8,7 @@ import { IStateInterface } from '@/interfaces';
 Vue.use(Vuex);
 
 const state: IStateInterface = {
-    cityName:''
+    cityName: '',
 };
 
 export default new Vuex.Store({

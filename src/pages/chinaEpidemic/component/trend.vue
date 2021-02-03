@@ -32,10 +32,7 @@ export default {
         ajax.get(trendURL)
             .then((req) => {
                  const tData= req.data;
-                //后端bug,返回的是false
                 if(tData.isOk){
-                    // console.log(tData);
-                    
                     this.data = tData.data.sort((a,b)=>a>=b);
                     this.render();
                 }else{
