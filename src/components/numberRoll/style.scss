@@ -1,18 +1,18 @@
 .epidemic-number__visual{
     .title{
         line-height: 3;
+        color: #eeeeee;
+        font-size: 18px;
     }
     .roll-container{
         margin-left: 18px;
         .visual-item{
-            background: url('../../assets/scrollNumberBg.jpg');
             background-size: cover;
             position: relative;
             display: inline-block;
             width: 45px;
             height: 72px;
             box-sizing: border-box;
-            border: 1px solid #eeeeee;
             border-radius: 3px;
             font-size: 54px;
             line-height: 72px;

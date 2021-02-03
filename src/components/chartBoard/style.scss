@@ -1,0 +1,55 @@
+.chart-board__container{
+    position: relative;
+    border: 1px solid transparent;
+    margin-top: 20px;
+    box-sizing: border-box;
+    .resize-container{
+        height: 100%;
+        .border-sourround{
+            span{
+                position: absolute;
+                width: 2px;
+                height: 20px;
+                background-color: rgba(238, 238, 238, .6);
+                &.top-top-left{
+                    top: 2px;
+                    transform: rotate(-90deg);
+                    transform-origin: 0 0;
+                }
+                &.top-top-right{
+                    right: 0;
+                    transform: rotate(90deg);
+                    transform-origin: 0 0;
+                }
+                &.top-right{
+                    right: 0;
+                }
+                &.bottom-left{
+                    bottom: 0;
+                }
+                &.bottom-bottom-left{
+                    bottom: 0;
+                    transform: rotate(90deg);
+                    transform-origin: 0 100%;
+                }
+                &.bottom--bottom-right{
+                    bottom: 0;
+                    right: 0;
+                    transform: rotate(-90deg);
+                    transform-origin: 0 100%;
+                }
+                &.bottom-right{
+                    bottom: 0;
+                    right: 0;
+                }
+            }
+        }
+        .chart-container{
+            height: 100%;
+            padding: 0;
+            .title{
+                color: #eeeeee;
+            }
+        }
+    }
+}

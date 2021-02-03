@@ -1,0 +1,16 @@
+.fullpage-container__section {
+    display: flex;
+    height: 100vh;
+
+    #soccer-container {
+        flex: 3;
+    }
+    .display-table {
+        z-index: 999;
+        float: right;
+        padding-top: 100px;
+        height: calc(100% - 400px);
+        flex: 1;
+    }
+}
+
