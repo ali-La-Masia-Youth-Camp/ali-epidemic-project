@@ -6,6 +6,7 @@
 import {Chart} from '@antv/g2';
 import AJAX from '@/common/ajax';
 import {Message} from 'element-ui';
+import show from '../util/showCity';
 
 export default {
     name: 'city',
@@ -35,16 +36,16 @@ export default {
                     if (cityData.isOk) {
                         this.city = cityData.data.sort((a, b) => b.confirm - a.confirm);
                         this.render();
-                        // console.log(this.city);
                     } else {
                         Message.error(cityData.error);
                     }
                 })
                 .catch((e) => {
-                    // console.error(e,'city');
                     Message.error(e);
                 });
             })
+    },
+    mounted(){
     },
     methods: {
          render() {
@@ -54,6 +55,7 @@ export default {
                     autoFit: true,
                     padding: [20, 80],
                 });
+                show.call(this,chart);
                 chart.interval()
                     .position('city*confirm')
                     .color('confirm', ['yellow', 'green'])

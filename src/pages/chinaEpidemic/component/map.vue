@@ -13,6 +13,7 @@ import AJAX from '@/common/ajax';
 import ChinaMap from '@/mock/china-province.json';
 import {Message} from 'element-ui';
 import showHint from '../util/click';
+import Qingdao from '@/mock/qingdao.json';
 
 export default {
     name: 'china-map',
@@ -75,14 +76,12 @@ export default {
     },
     methods: {
         render(){
-            // setTimeout(() => {
                 // 可视化用户数据
-                this.userData(this.$has, ['#FF0000', '#220000'], this.$ds, this.$chart, this.$worldMap);
+                this.renderData(this.$has, ['#FF0000', '#220000'], this.$ds, this.$chart, this.$worldMap);
                 showHint(this.$chart,this);
-            // });
         },
 
-        userData(data,color,ds,chart,worldMap){
+        renderData(data,color,ds,chart,worldMap){
             const userDv = ds.createView()
                                 .source(data)
                                 .transform({
@@ -167,8 +166,45 @@ export default {
                 this.$chart=chart; 
                 this.$worldMap = worldMap;
                 chart.render();
+        },
+
+        renderCity(data,chart){
+                // 绘制城市
+                const ds = new DataSet();
+                const map = ds.createView('back')
+                    .source(data, {
+                        type: 'GeoJSON',
+                    });
+                const view = chart.createView();
+                view.data(map.rows);
+                view.tooltip(false);
+                view.polygon()
+                            .position('longitude*latitude')
+                            .style({
+                                fill: 'green',
+                                stroke: '#black',
+                                lineWidth: 1,
+                            });
+                this.$cityView = view;
+                // this.$ds=ds;
+                // this.$chart=chart; 
+                // this.$worldMap = worldMap;
+                chart.render();
         }
     },
+
+    watch:{
+        '$store.state.cityName'(newV){
+            console.log(newV);
+            if(newV!==''){
+                this.renderCity(Qingdao,this.$chart);
+            }else{
+                // this.$chart.clearView(this.$cityView);
+                // console.log(this.$cityView);
+                this.$cityView.clear();
+            }
+        }
+    }
 };
 </script>
 

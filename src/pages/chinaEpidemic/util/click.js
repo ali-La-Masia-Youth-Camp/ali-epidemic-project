@@ -6,7 +6,7 @@ let curview = null;
 //地图点击显示提示信息
 //参数 组件对象
 export default function(view,component){
-    console.log(view);
+    // console.log(view);
     view.on('element:click', (context) => {
       // console.log(context);
       if(!context.data.data.value) return;
