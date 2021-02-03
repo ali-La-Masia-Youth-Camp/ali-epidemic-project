@@ -1,4 +1,4 @@
-import { Inject, Controller, Provide ,Get} from '@midwayjs/decorator';
+import {Inject, Controller, Provide, Get, Query} from '@midwayjs/decorator';
 import { Context } from 'egg';
 import {ChinaService} from "../service/china";
 
@@ -33,6 +33,12 @@ export class ChinaController {
   @Get('/city')
   async getCityData(){
     const data=await this.chinaService.getCityData();
+    return data;
+  }
+
+  @Get('/provinceCity')
+  async getCityByProvince(@Query('province') province: string){
+    const data=await this.chinaService.getCityByProvince(province);
     return data;
   }
 }
